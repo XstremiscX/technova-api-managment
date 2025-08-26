@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 
+dotenv.config();
+
 @Module({
     imports:[
         TypeOrmModule.forRoot({
@@ -12,7 +14,8 @@ import * as dotenv from 'dotenv';
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
             entities:[__dirname+'/**/*.entity{.ts,.js}'],
-            synchronize: true,
+            migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
+            synchronize: false,
             autoLoadEntities: true,
         })
     ]
