@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
-import { UserTypeResponseDto } from "./response-user-type.dto";
+import { UserTypeResponseDto } from "../../../users-type/presentations/dtos/response-user-type.dto";
 
 export class LoginPayloadResponseDto{
 

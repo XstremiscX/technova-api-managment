@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import { UserEntity } from 'src/app/users/domain/entities/user.entity';
-import { UserTypeEntity } from 'src/app/users/domain/entities/user-type.entity';
-import { BrandEntity } from 'src/app/brands/domain/entities/ibrand.entity';
+import { UserTypeEntity } from 'src/app/users-type/domain/entities/user-type.entity';
+import { BrandEntity } from 'src/app/brands/domain/entities/brand.entity';
 import { CategoryEntity } from 'src/app/categories/domain/entities/category.entity';
 import * as dotenv from 'dotenv';
 import { ProductEntity } from 'src/app/products/domain/entities/product.entity';

@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from 'typeorm';
 import { ITypeEntity } from '../interfaces/itype-entity.interface';
-import { UserEntity } from './user.entity';
+import { UserEntity } from '../../../users/domain/entities/user.entity';
 
 @Entity('user_types')
 export class UserTypeEntity implements ITypeEntity {

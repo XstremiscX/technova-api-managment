@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from "class-transformer";
-import { UserTypeResponseDto } from "./response-user-type.dto";
+import { UserTypeResponseDto } from "../../../users-type/presentations/dtos/response-user-type.dto";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UserResponseDto{

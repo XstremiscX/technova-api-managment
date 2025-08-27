@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from 'typeorm';
 import { IProductEntity } from '../interfaces/iproduct-entity.interface';
-import { BrandEntity } from 'src/app/brands/domain/entities/ibrand.entity';
+import { BrandEntity } from 'src/app/brands/domain/entities/brand.entity';
 import { CategoryEntity } from 'src/app/categories/domain/entities/category.entity';
 import { UserEntity } from 'src/app/users/domain/entities/user.entity';
 

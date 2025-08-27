@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from 'typeorm';
 import { IUserEntity } from '../interfaces/iuser-entity.interface';
-import { UserTypeEntity } from './user-type.entity';
+import { UserTypeEntity } from '../../../users-type/domain/entities/user-type.entity';
 import { ProductEntity } from 'src/app/products/domain/entities/product.entity';
 import { SaleEntity } from 'src/app/sales/domain/entities/sale.entity';
 
