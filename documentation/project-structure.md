@@ -12,6 +12,7 @@
 
 ## Archives Structure
 
+```
 |--documentation/ **Folder containing project documentation**
 |--src/ **Folder containing all API code**
 |   |--app/ **Folder containing the separation of domains and common files**
@@ -44,3 +45,4 @@
 |   |   |   |--utils/ **- Contains helper functions and reusable utilities (e.g. date formatting, string manipulation, error builders).**
 |   |   |   |--error-management/ **Defines global exception filters, custom error classes, and error handling logic**
 |--test/ **Folder containing all the project's testing files**
+```
