@@ -24,4 +24,5 @@ export class SaleEntity implements ISaleEntity{
 
     @Column({ type: 'text' })
     details: string;
+
 }

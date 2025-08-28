@@ -5,8 +5,8 @@ export interface IUserEntity {
     phone:string;
     address:string;
     password:string;
-    type:string; // 0:buyer 1:seller
-    status:number; // 0:inactive 1:active
+    type:string;
+    status:boolean; // 0:inactive 1:active
     verified:boolean; // true:verified false:unverified
     registration_date:Date;
 }
