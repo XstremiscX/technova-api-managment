@@ -1,33 +1,14 @@
 import { Expose, Exclude, Type } from "class-transformer";
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { BrandResponseDto } from "src/app/brands/presentations/dtos/response-brand.dto";
 import { CategoryResponseDto } from "src/app/categories/presentations/dtos/response-category.dto";
+import { ProductItemResponseDto } from "./response-product-itme.dto";
 
-export class ProductDetailResponseDto{
-
-    @Expose()
-    @ApiProperty({description:"Product Id", example:"1kwg3f-sah32j34-d123"})
-    id:string;
-
-    @Expose()
-    @ApiProperty({description:"Product name", example:"MSI PC Dragon Style"})
-    name:string;
-
-    @Expose()
-    @ApiProperty({description:"Product image url", example:"https://imagerepositorie/product_image.png"})
-    image:string;
+export class ProductDetailResponseDto extends PartialType(ProductItemResponseDto){
 
     @Expose()
     @ApiProperty({description:"Product description", example:"Product description"})
     description:string;
-
-    @Expose()
-    @ApiProperty({description:"Product price", example:120000})
-    price:number;
-
-    @Expose()
-    @ApiProperty({description:"Product stock", example:60})
-    stock:number;
 
     @Expose()
     @ApiProperty({description:"Products details", example:"{Ram:12Gb,SSD:500GB}"})
@@ -38,11 +19,6 @@ export class ProductDetailResponseDto{
 
     @Exclude()
     createdAt:Date;
-
-    @Expose()
-    @ApiProperty({description:"Brand object response", type: ()=>BrandResponseDto})
-    @Type(()=>BrandResponseDto)
-    brand:BrandResponseDto;
 
     @Expose()
     @ApiProperty({description:"Category object resposne", type: ()=>CategoryResponseDto})
