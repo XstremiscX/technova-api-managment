@@ -6,6 +6,7 @@ import { UserEntity } from 'src/app/users/domain/entities/user.entity';
 
 @Entity('products')
 export class ProductEntity implements IProductEntity {
+    
     @PrimaryGeneratedColumn('uuid')
     id:string;
 
@@ -41,4 +42,5 @@ export class ProductEntity implements IProductEntity {
 
     @ManyToOne(() => UserEntity, (user) => user.id)
     seller_id: string;
+
 }
