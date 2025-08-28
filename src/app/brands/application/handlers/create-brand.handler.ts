@@ -6,6 +6,7 @@ import{ BrandMapper } from "../mappers/brand.mapper";
 import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
 import { v4 as uuid } from 'uuid';
 import { HttpException, HttpStatus } from "@nestjs/common";
+import { BrandFactory } from "../../factories/brand.factory";
 
 @CommandHandler(CreateBrandCommand)
 export class CreateBranHandler implements ICommandHandler<CreateBrandCommand>{
@@ -17,7 +18,7 @@ export class CreateBranHandler implements ICommandHandler<CreateBrandCommand>{
     async execute(command: CreateBrandCommand): Promise<BrandResponseDto> {
         try{
             // A new brand is created with the data received. 
-            const brand = new Brand(uuid(),command.dto.name)
+            const brand = BrandFactory.createFromDto(command.dto);
 
             // Let's execute the createBrand repository function to save the new brand in the database.
             await this.brandRepo.createBrand(brand);
