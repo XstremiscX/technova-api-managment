@@ -10,11 +10,14 @@ import { Repository } from "typeorm";
 export class BrandRepository implements IBrandRepository{
 
 
-    constructor(@InjectRepository(BrandEntity) private repo: Repository<BrandEntity>){};
+    constructor(@InjectRepository(BrandEntity) private repo: Repository<BrandEntity>, 
+    private readonly mapper: BrandMapper){};
+
+   
 
     async createBrand(brand: Brand): Promise<void> {
 
-        const entity = BrandMapper.toEntity(brand);
+        const entity = this.mapper.toEntity(brand);
 
         await this.repo.save(entity);
     }
@@ -23,7 +26,7 @@ export class BrandRepository implements IBrandRepository{
         
         const entityList = await this.repo.find();
 
-        return BrandMapper.toDomainList(entityList);
+        return this.mapper.toDomainList(entityList);
         
     }   
 
@@ -31,7 +34,7 @@ export class BrandRepository implements IBrandRepository{
 
         const entity = await this.repo.findOneBy({id});
 
-        return entity ? BrandMapper.toDomain(entity) : null;
+        return entity ? this.mapper.toDomain(entity) : null;
 
     }
 
@@ -45,15 +48,25 @@ export class BrandRepository implements IBrandRepository{
 
         const updatedBrand = await this.repo.save(entityExists);
 
-        return BrandMapper.toDomain(updatedBrand);
+        return this.mapper.toDomain(updatedBrand);
         
     }
 
-    async deleteBrand(brand: Brand): Promise<void> {
+    async deleteBrand(id: string): Promise<void> {
+
+        const entity = await this.repo.findOneBy({id})
         
-        const entity = BrandMapper.toEntity(brand);
+        if(entity){
+
+            this.repo.remove(entity);
+
+        }else{
+
+            throw new NotFoundException("Brand not found");
+
+        }
+
         
-        this.repo.remove(entity);
 
     }
 

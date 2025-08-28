@@ -16,6 +16,6 @@ export interface IBrandRepository{
     updateBrand(brand:Brand):Promise<Brand>;
 
     // This method allows you to remove a brand.
-    deleteBrand(brand:Brand):Promise<void>;
+    deleteBrand(id:string):Promise<void>;
     
 }

@@ -39,3 +39,9 @@ npm install @nestjs/mapped-types
 ```bash
 npm install @nestjs/swagger swagger-ui-express
 ```
+
+# Install cqrs
+
+```bash
+npm install @nestjs/cqrs
+```
