@@ -4,13 +4,13 @@ import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository
 import { Brand } from "../../domain/entities/brand";
 import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
 import { BrandMapper } from "../mappers/brand.mapper";
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, Inject } from "@nestjs/common";
 
 @CommandHandler(UpdateBrandCommand)
 export class UpdateBrandHandler implements ICommandHandler<UpdateBrandCommand>{
 
     constructor(
-        private readonly brandRepo: IBrandRepository
+        @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository
     ){}
 
     async execute(command: UpdateBrandCommand): Promise<BrandResponseDto> {

@@ -5,14 +5,14 @@ import { CreateBrandCommand } from "../commands/create.brand.command";
 import{ BrandMapper } from "../mappers/brand.mapper";
 import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
 import { v4 as uuid } from 'uuid';
-import { HttpException, HttpStatus } from "@nestjs/common";
+import { HttpException, HttpStatus, Inject } from "@nestjs/common";
 import { BrandFactory } from "../../factories/brand.factory";
 
 @CommandHandler(CreateBrandCommand)
-export class CreateBranHandler implements ICommandHandler<CreateBrandCommand>{
+export class CreateBrandHandler implements ICommandHandler<CreateBrandCommand>{
 
     constructor(
-        private readonly brandRepo:IBrandRepository,
+        @Inject("IBrandRepository") private readonly brandRepo:IBrandRepository,
     ){}
 
     async execute(command: CreateBrandCommand): Promise<BrandResponseDto> {

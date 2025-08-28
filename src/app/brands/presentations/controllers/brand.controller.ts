@@ -52,7 +52,7 @@ export class BrandController {
         return this.commandBus.execute(new UpdateBrandCommand(updateBrandDto,id));
     }
 
-    @Delete('id')
+    @Delete(':id')
     @ApiOperation({summary:"Delete Brand"})
     @ApiResponse({status:200, type: DeleteBrandResponseDto})
     async deleteBrand(@Param('id') id:string){

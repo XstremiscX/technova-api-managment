@@ -1,13 +1,13 @@
 import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import { DeleteBrandCommand } from "../commands/delete-brand.command";
 import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
-import { InternalServerErrorException } from "@nestjs/common";
+import { InternalServerErrorException, Inject } from "@nestjs/common";
 
 @CommandHandler(DeleteBrandCommand)
 export class DeleteBrandhandler implements ICommandHandler<DeleteBrandCommand>{
 
     constructor(
-        private readonly brandRepo: IBrandRepository,
+        @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository,
     ){}
 
     async execute(command: DeleteBrandCommand): Promise<object> {

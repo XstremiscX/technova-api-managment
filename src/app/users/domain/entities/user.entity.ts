@@ -25,8 +25,8 @@ export class UserEntity implements IUserEntity {
     password: string;
 
     // This statement generates the relationship between the user type table and the user, bringing the ID of the user type that it is.
-    @ManyToOne(() => UserTypeEntity, (type) => type.id)
-    type: string;
+    @ManyToOne(() => UserTypeEntity, (type) => type.users)
+    type: UserTypeEntity;
 
     @Column({ type: 'boolean', default: true }) // User state false:deleted, true:active
     status: boolean;

@@ -3,13 +3,13 @@ import { GetBrandByIdQuery } from "../queries/get-brand-by-id.query";
 import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
 import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
 import { BrandMapper } from "../mappers/brand.mapper";
-import { NotFoundException } from "@nestjs/common";
+import { NotFoundException, Inject } from "@nestjs/common";
 
 @QueryHandler(GetBrandByIdQuery)
 export class GetBrandByIdHandler implements IQueryHandler<GetBrandByIdQuery>{
     
     constructor(
-        private readonly brandRepo: IBrandRepository,
+        @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository,
     ){}
 
     async execute(query:GetBrandByIdQuery): Promise<BrandResponseDto> {

@@ -5,6 +5,9 @@ import { ClassSerializerInterceptor } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
 import { writeFileSync } from 'fs';
+import { resolve } from 'path';
+import { existsSync } from 'fs';
+import { mkdirSync } from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,9 +27,15 @@ async function bootstrap() {
 
   const apiDocument = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('../documentation/',app,apiDocument);
+  const docsPath = resolve(__dirname, '..', '..', 'documentation');
 
-  writeFileSync('../documentation/openApi.json',JSON.stringify(apiDocument));
+  if (!existsSync(docsPath)) {
+    mkdirSync(docsPath);
+  }
+
+  SwaggerModule.setup('docs',app,apiDocument);
+
+  writeFileSync(`${docsPath}/openApi.json`,JSON.stringify(apiDocument));
 
   await app.listen(parseInt(process.env.PORT || "3001"));
 }
