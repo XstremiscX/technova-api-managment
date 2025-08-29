@@ -16,10 +16,10 @@ export class SaleEntity implements ISaleEntity{
     @Column({ type: 'int' })
     quantity: number;
 
-    @ManyToOne(() => UserEntity, user => user.id)
+    @ManyToOne(() => UserEntity, user => user.purchases)
     buyer: string;
 
-    @ManyToOne(() => UserEntity, user => user.id)
+    @ManyToOne(() => UserEntity, user => user.sales)
     seller: string;
 
     @Column({ type: 'text' })

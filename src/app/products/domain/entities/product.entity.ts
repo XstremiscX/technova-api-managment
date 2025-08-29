@@ -33,12 +33,12 @@ export class ProductEntity implements IProductEntity {
     @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date;
 
-    @ManyToOne(() => BrandEntity, (brand) => brand.id)
-    brand: string;
+    @ManyToOne(() => BrandEntity, (brand) => brand.products)
+    brand: BrandEntity;
 
-    @ManyToOne(() => CategoryEntity, (category) => category.id)
-    category: string;
+    @ManyToOne(() => CategoryEntity, (category) => category.products)
+    category: CategoryEntity;
 
-    @ManyToOne(() => UserEntity, (user) => user.id)
-    seller_id: string;
+    @ManyToOne(() => UserEntity, (user) => user.products)
+    seller_id: UserEntity;
 }

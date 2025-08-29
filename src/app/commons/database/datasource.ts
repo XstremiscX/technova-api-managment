@@ -6,7 +6,6 @@ import { CategoryEntity } from 'src/app/categories/domain/entities/category.enti
 import * as dotenv from 'dotenv';
 import { ProductEntity } from 'src/app/products/domain/entities/product.entity';
 import { SaleEntity } from 'src/app/sales/domain/entities/sale.entity';
-import { InitialSchemaModified1756238700669 } from './migrations/1756238700669-InitialSchemaModified';
 
 dotenv.config();
 
@@ -18,6 +17,6 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: [UserTypeEntity, UserEntity, BrandEntity, CategoryEntity, ProductEntity, SaleEntity],
-  migrations: [InitialSchemaModified1756238700669],
+  migrations: [],
   synchronize: false,
 });
