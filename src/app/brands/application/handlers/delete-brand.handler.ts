@@ -25,10 +25,11 @@ export class DeleteBrandhandler implements ICommandHandler<DeleteBrandCommand>{
 
             // We return an object that indicates the status of the brand and a deletion message.
             return {result:"deleted",message:"Brand deleted succesfully"}
+            
         }else{
 
             // If it has not been deleted, an internalServerError is thrown.
-            throw new InternalServerErrorException("Internal server error.")
+            throw new InternalServerErrorException("An error occurred during program execution.")
         }
 
     }

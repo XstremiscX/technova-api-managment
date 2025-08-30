@@ -13,6 +13,7 @@ export class CreateBrandHandler implements ICommandHandler<CreateBrandCommand>{
 
     constructor(
         @Inject("IBrandRepository") private readonly brandRepo:IBrandRepository,
+        private readonly mapper: BrandMapper
     ){}
 
     async execute(command: CreateBrandCommand): Promise<BrandResponseDto> {
@@ -23,15 +24,13 @@ export class CreateBrandHandler implements ICommandHandler<CreateBrandCommand>{
             // Let's execute the createBrand repository function to save the new brand in the database.
             await this.brandRepo.createBrand(brand);
 
-            // We instantiate the brandMapper so we can use the method for converting domains to responseDto.
-            const mapper = new BrandMapper()
-
             // Returns ResponseDTO
-            return mapper.toResponseDto(brand);
+            return this.mapper.toResponseDto(brand);
 
         }catch(e){
 
-            if(e.name == "HttpException"){
+            
+            if(e.name == "HttpException" || e.name == "BadRequestException"){
                 throw e;
             }else{
                 throw new HttpException(`Internal server error: ${e.message}`, HttpStatus.INTERNAL_SERVER_ERROR)

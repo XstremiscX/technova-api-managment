@@ -1,5 +1,4 @@
 import { Brand } from "../entities/brand";
-import { BrandEntity } from "../entities/brand.entity";
 
 export interface IBrandRepository{
 

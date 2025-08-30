@@ -9,7 +9,8 @@ import { NotFoundException, Inject } from "@nestjs/common";
 @QueryHandler(GetAllBrandsQuery)
 export class GetAllBrandsHandler implements IQueryHandler<GetAllBrandsQuery>{
     constructor(
-        @Inject("IBrandRepository")  private readonly brandRepo: IBrandRepository
+        @Inject("IBrandRepository")  private readonly brandRepo: IBrandRepository,
+        private readonly mapper:BrandMapper
     ){}
 
     async execute():Promise<BrandResponseDto[]> {
@@ -21,11 +22,8 @@ export class GetAllBrandsHandler implements IQueryHandler<GetAllBrandsQuery>{
         // We check to see if there are any brand.
         if(brandList){
 
-            // We instantiate the brandMapper so we can use the method for converting domains to responseDto.
-            const mapper = new BrandMapper()
-
             // We convert domains into ResponseDtos
-            const brandListConverted = brandList.map(e=> mapper.toResponseDto(e));
+            const brandListConverted = brandList.map(e=> this.mapper.toResponseDto(e));
 
             // Return the list
             return brandListConverted;

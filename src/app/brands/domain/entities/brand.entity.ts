@@ -11,6 +11,7 @@ export class BrandEntity implements IBrandEntity {
     @Column({ type: 'varchar', length: 150 })
     name: string;
 
+    // This statement creates the relationship between the products table and the brands table.
     @OneToMany(() => ProductEntity, product => product.brand)
     products: ProductEntity[];
 

@@ -10,6 +10,7 @@ export class GetBrandByIdHandler implements IQueryHandler<GetBrandByIdQuery>{
     
     constructor(
         @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository,
+        private readonly mapper:BrandMapper
     ){}
 
     async execute(query:GetBrandByIdQuery): Promise<BrandResponseDto> {
@@ -19,11 +20,8 @@ export class GetBrandByIdHandler implements IQueryHandler<GetBrandByIdQuery>{
 
         if(brand){
 
-            // We instantiate the brandMapper so we can use the method for converting domains to responseDto.
-            const mapper = new BrandMapper()
-
             // convert domain into ResponseDtos
-            const brandResponse = mapper.toResponseDto(brand);
+            const brandResponse = this.mapper.toResponseDto(brand);
 
             // Returns Brand response
             return brandResponse;
