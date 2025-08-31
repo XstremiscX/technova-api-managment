@@ -2,7 +2,6 @@ import { ICommandHandler, CommandHandler, CommandBus } from "@nestjs/cqrs";
 import { UpdateBrandCommand } from "../commands/update-brand.command";
 import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
 import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
-import { BrandMapper } from "../mappers/brand.mapper";
 import {  Inject } from "@nestjs/common";
 import { BrandFactory } from "../../factories/brand.factory";
 
@@ -10,8 +9,7 @@ import { BrandFactory } from "../../factories/brand.factory";
 export class UpdateBrandHandler implements ICommandHandler<UpdateBrandCommand>{
 
     constructor(
-        @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository,
-        private readonly mapper:BrandMapper
+        @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository
     ){}
 
     async execute(command: UpdateBrandCommand): Promise<BrandResponseDto> {
@@ -23,7 +21,7 @@ export class UpdateBrandHandler implements ICommandHandler<UpdateBrandCommand>{
         const brandUpdated = await this.brandRepo.updateBrand(brand);
 
         // Returns BrandResponseDto
-        return this.mapper.toResponseDto(brandUpdated);
+        return brandUpdated;
 
     }
 

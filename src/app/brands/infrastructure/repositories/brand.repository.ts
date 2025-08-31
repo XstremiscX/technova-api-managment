@@ -3,22 +3,18 @@ import { IBrandRepository } from "../../domain/interfaces/ibrand-repository.inte
 import { InjectRepository } from "@nestjs/typeorm";
 import { BrandEntity } from "../../domain/entities/brand.entity";
 import { Brand } from "../../domain/entities/brand";
-import { BrandMapper } from "../../application/mappers/brand.mapper";
 import { Repository } from "typeorm";
 
 @Injectable()
-export class BrandRepository implements IBrandRepository{
+export class BrandRepository{
 
 
-    constructor(@InjectRepository(BrandEntity) private repo: Repository<BrandEntity>, 
-    private readonly mapper: BrandMapper){};
+    constructor(@InjectRepository(BrandEntity) private repo: Repository<BrandEntity>){};
 
     // This method create a brand in the database.
     async createBrand(brand: Brand): Promise<void> {
 
-        const entity = this.mapper.toEntity(brand);
-
-        await this.repo.save(entity);
+        await this.repo.save(brand);
     }
 
     // This method gets all brands in the database.
@@ -26,16 +22,24 @@ export class BrandRepository implements IBrandRepository{
         
         const entityList = await this.repo.find();
 
-        return this.mapper.toDomainList(entityList);
+        return entityList;
         
     }   
 
     // This method gets a brand by ID.
-    async getBrandById(id: string): Promise<Brand | null> {
+    async getBrandById(id: string): Promise<Brand> {
 
         const entity = await this.repo.findOneBy({id});
 
-        return entity ? this.mapper.toDomain(entity) : null;
+        if(entity){
+
+            return entity
+
+        }else{
+
+            throw new NotFoundException("Brand not found")
+
+        }
 
     }
 
@@ -44,13 +48,19 @@ export class BrandRepository implements IBrandRepository{
 
         const entityExists = await this.repo.findOneBy({id: brand.id});
 
-        if(!entityExists) throw new NotFoundException("The brand to be updated does not exist.");
+        if(entityExists){
 
-        entityExists.name = brand.name;
+            entityExists.name = brand.name;
 
-        const updatedBrand = await this.repo.save(entityExists);
+            const updatedBrand = await this.repo.save(entityExists);
 
-        return this.mapper.toDomain(updatedBrand);
+            return updatedBrand;
+
+        }else{ 
+
+            throw new NotFoundException("The brand to be updated does not exist.");
+            
+        }
         
     }
 

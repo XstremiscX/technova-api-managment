@@ -1,9 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { IBrandEntity } from "../interfaces/ibrand-entity.interface";
 import { ProductEntity } from "src/app/products/domain/entities/product.entity";
 
 @Entity('brands')
-export class BrandEntity implements IBrandEntity {
+export class BrandEntity{
     
     @PrimaryGeneratedColumn('uuid')
     id: string;

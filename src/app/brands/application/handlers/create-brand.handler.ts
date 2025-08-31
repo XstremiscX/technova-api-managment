@@ -2,7 +2,6 @@ import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
 import { Brand } from "../../domain/entities/brand";
 import { CreateBrandCommand } from "../commands/create.brand.command";
-import{ BrandMapper } from "../mappers/brand.mapper";
 import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
 import { v4 as uuid } from 'uuid';
 import { HttpException, HttpStatus, Inject } from "@nestjs/common";
@@ -13,7 +12,6 @@ export class CreateBrandHandler implements ICommandHandler<CreateBrandCommand>{
 
     constructor(
         @Inject("IBrandRepository") private readonly brandRepo:IBrandRepository,
-        private readonly mapper: BrandMapper
     ){}
 
     async execute(command: CreateBrandCommand): Promise<BrandResponseDto> {
@@ -25,11 +23,11 @@ export class CreateBrandHandler implements ICommandHandler<CreateBrandCommand>{
             await this.brandRepo.createBrand(brand);
 
             // Returns ResponseDTO
-            return this.mapper.toResponseDto(brand);
+            return brand;
 
         }catch(e){
 
-            
+
             if(e.name == "HttpException" || e.name == "BadRequestException"){
                 throw e;
             }else{
