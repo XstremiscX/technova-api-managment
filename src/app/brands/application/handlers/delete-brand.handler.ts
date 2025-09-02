@@ -1,36 +1,30 @@
 import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import { DeleteBrandCommand } from "../commands/delete-brand.command";
 import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
-import { InternalServerErrorException, Inject } from "@nestjs/common";
+import { Inject, NotFoundException } from "@nestjs/common";
+import { DeletedResult } from "src/app/commons/utils/enums/deleted-resutls.enum";
+import { DeleteBrandResponseDto } from "../../presentations/dtos/response-delete-brand.dto";
 
 @CommandHandler(DeleteBrandCommand)
-export class DeleteBrandhandler implements ICommandHandler<DeleteBrandCommand>{
+export class DeleteBrandHandler implements ICommandHandler<DeleteBrandCommand>{
 
     constructor(
         @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository,
     ){}
 
-    async execute(command: DeleteBrandCommand): Promise<object> {
-        
+    async execute(command: DeleteBrandCommand): Promise<DeleteBrandResponseDto> {
+
         // The ID is extracted to verify later that the brand has been deleted.
         const id = command.id;
 
+        // Verify if exists a brand with the id.
+        const brandExists = await this.brandRepo.findById(id);
+
         // The method to remove the brand is executed.
-        await this.brandRepo.deleteBrand(command.id);
+        await this.brandRepo.delete(command.id);
 
-        // We search for the brand and store the result in a variable to verify its status.
-        const deleted = await this.brandRepo.getBrandById(id);
-
-        if(deleted == null || deleted == undefined){
-
-            // We return an object that indicates the status of the brand and a deletion message.
-            return {result:"deleted",message:"Brand deleted succesfully"}
-            
-        }else{
-
-            // If it has not been deleted, an internalServerError is thrown.
-            throw new InternalServerErrorException("An error occurred during program execution.")
-        }
+        // We return an object that indicates the status of the brand and a deletion message.
+        return {result: DeletedResult.DELETED ,message:"Brand deleted succesfully"}
 
     }
 

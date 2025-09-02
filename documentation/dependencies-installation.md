@@ -45,3 +45,6 @@ npm install @nestjs/swagger swagger-ui-express
 ```bash
 npm install @nestjs/cqrs
 ```
+
+# Install config
+npm i @nestjs/config
