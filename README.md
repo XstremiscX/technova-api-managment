@@ -19,9 +19,7 @@ To install the API correctly on your local machine, you must clone this reposito
 git clone https://github.com/XstremiscX/technova-api-managment.git
 ```
 
-Next, install all dependencies. You can find which dependencies are used and how to install them here [Dependencies installation](https://github.com/XstremiscX/technova-api-managment/blob/master/documentation/dependencies-installation.md).
-
-Or execute this setup file [Setup](https://github.com/XstremiscX/technova-api-managment/blob/master/setup.sh).
+Next, install all dependencies. You can find how to install them here [Dependencies installation](https://github.com/XstremiscX/technova-api-managment/blob/master/documentation/dependencies-installation.md).
 
 Next, configure the database tables and TypeORM. You can see how to do this here [Database and ORM configuration](https://github.com/XstremiscX/technova-api-managment/blob/master/documentation/database-and-orm-configuration.md)
 

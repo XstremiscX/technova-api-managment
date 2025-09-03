@@ -28,7 +28,7 @@ async function bootstrap() {
 
   const apiDocument = SwaggerModule.createDocument(app, config);
 
-  const docsPath = resolve(__dirname, '..', '..', 'documentation');
+  const docsPath = resolve(__dirname, '..', 'documentation');
 
   if (!existsSync(docsPath)) {
     mkdirSync(docsPath);

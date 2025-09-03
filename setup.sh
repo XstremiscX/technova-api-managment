@@ -33,7 +33,11 @@ echo "🧠 Instalando @nestjs/cqrs..."
 npm install @nestjs/cqrs
 
 # Install config
-echo "🧠 Instalando @nestjs/config"
+echo "🔧 Instalando @nestjs/config"
 npm install @nestjs/config
+
+# Install passport, jwt, bycript
+echo "✅ Instalando @nestjs/passport passport passport-jwt @nestjs/jwt bcrypt"
+npm install @nestjs/passport passport passport-jwt @nestjs/jwt bcrypt
 
 echo "🎉 Instalación completa. Tu entorno está listo para construir la Technova API."
