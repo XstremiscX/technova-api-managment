@@ -1,47 +1,13 @@
-# Install npm
+# Installing dependencies.
+
+These commands must be executed in the root folder of the file. First, you must grant permissions to the file.
 
 ```bash
-npm install
+chmod +x setup.sh
 ```
 
-# Install NestJs CLI
+After that, execute the following command.
 
 ```bash
-npm install -g @nestjs/cli
-```
-
-# Install TypeORM and pg
-
-```bash
-npm install @nestjs/typeorm typeorm pg
-```
-
-# Install ts-node tsconfig-paths
-
-```bash
-npm install -D ts-node tsconfig-paths
-```
-
-# Install class-validator and class-transformer
-
-```bash
-npm install class-validator class-transformer
-```
-
-# Install mapped-types
-
-```bash
-npm install @nestjs/mapped-types
-```
-
-# Install swagger and swagger-ui-express
-
-```bash
-npm install @nestjs/swagger swagger-ui-express
-```
-
-# Install cqrs
-
-```bash
-npm install @nestjs/cqrs
+./setup.sh
 ```

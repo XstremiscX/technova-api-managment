@@ -8,6 +8,7 @@ import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { mkdirSync } from 'fs';
+import { AllExceptionsFilter } from './app/commons/error_management/all-exceptions.filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,7 +28,7 @@ async function bootstrap() {
 
   const apiDocument = SwaggerModule.createDocument(app, config);
 
-  const docsPath = resolve(__dirname, '..', '..', 'documentation');
+  const docsPath = resolve(__dirname, '..', 'documentation');
 
   if (!existsSync(docsPath)) {
     mkdirSync(docsPath);
@@ -36,6 +37,8 @@ async function bootstrap() {
   SwaggerModule.setup('docs',app,apiDocument);
 
   writeFileSync(`${docsPath}/openApi.json`,JSON.stringify(apiDocument));
+  
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   await app.listen(parseInt(process.env.PORT || "3001"));
 }

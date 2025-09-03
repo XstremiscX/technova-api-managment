@@ -8,7 +8,7 @@ Then, you must configure the environment(.env) data:
 2. DB_HOST="Database host"
 3. DB_USERNAME="Database user"
 4. DB_PASSWORD="Database user password"
-5. DB_DATABASE="Database name"
+5. DB_NAME="Database name"
 
 Then you must execute this command(Replace the InitialScheme with whatever scheme you want. ):
 

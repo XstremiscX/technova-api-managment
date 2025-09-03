@@ -4,9 +4,9 @@ import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Get } from "@nestjs/common";
 import { BrandResponseDto } from "../dtos/response-brand.dto";
 import { GetAllBrandsQuery } from "../../application/queries/get-all-brands.query";
-import { GetBrandByIdQuery } from "../../application/queries/get-brand-by-id.query";
+import { GetBrandByIdQuery } from "../../application/queries/get-by-id-brand.query";
 import { CreateBrandDto } from "../dtos/create-brand.dto";
-import { CreateBrandCommand } from "../../application/commands/create.brand.command";
+import { CreateBrandCommand } from "../../application/commands/create-brand.command";
 import { UpdateBrandDto } from "../dtos/update-brand.dto";
 import { UpdateBrandCommand } from "../../application/commands/update-brand.command";
 import { DeleteBrandCommand } from "../../application/commands/delete-brand.command";
@@ -41,7 +41,7 @@ export class BrandController {
     @ApiResponse({status:201, type: BrandResponseDto})
     @ApiResponse({status:500, description:"Internal server error."})
     async createBrand(@Body() createBrandDto: CreateBrandDto){
-        return this.commandBus.execute(new CreateBrandCommand(createBrandDto));
+        return this.commandBus.execute(new CreateBrandCommand(createBrandDto.name));
     }
 
     @Put(':id')
@@ -49,7 +49,7 @@ export class BrandController {
     @ApiResponse({status:200, type:BrandResponseDto})
     @ApiResponse({status:400, description:"Bad request"})
     async updateBrand(@Param('id') id:string, @Body() updateBrandDto: UpdateBrandDto){
-        return this.commandBus.execute(new UpdateBrandCommand(updateBrandDto,id));
+        return this.commandBus.execute(new UpdateBrandCommand(updateBrandDto.name,id));
     }
 
     @Delete(':id')

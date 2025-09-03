@@ -6,13 +6,15 @@ import { BrandEntity } from '../../domain/entities/brand.entity';
 import { BrandController } from '../../presentations/controllers/brand.controller';
 
 import { BrandRepository } from '../repositories/brand.repository';
-import type { IBrandRepository } from '../../domain/interfaces/ibrand-repository.interface';
 
 import { UpdateBrandHandler } from '../../application/handlers/update-brand.handler';
-import { DeleteBrandhandler } from '../../application/handlers/delete-brand.handler';
+import { DeleteBrandHandler } from '../../application/handlers/delete-brand.handler';
 import { GetAllBrandsHandler } from '../../application/handlers/get-all-brands.handler';
-import { GetBrandByIdHandler } from '../../application/handlers/get-brand-by-id.handler';
+import { GetBrandByIdHandler } from '../../application/handlers/get-by-id-brand.handler';
 import { CreateBrandHandler } from '../../application/handlers/create-brand.handler';
+
+import { BrandMapper } from '../../presentations/mappers/brand.mapper';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([BrandEntity]),
@@ -26,10 +28,13 @@ import { CreateBrandHandler } from '../../application/handlers/create-brand.hand
       useClass: BrandRepository,
     },
 
+    //mapper
+    BrandMapper,
+
     // Handlers
     CreateBrandHandler,
     UpdateBrandHandler,
-    DeleteBrandhandler,
+    DeleteBrandHandler,
     GetAllBrandsHandler,
     GetBrandByIdHandler,
   ],

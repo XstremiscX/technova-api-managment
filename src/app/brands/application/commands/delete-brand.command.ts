@@ -1,5 +1,3 @@
-import { Brand } from "../../domain/entities/brand";
-
 export class DeleteBrandCommand{
     // This command should receive an ID for the element that needs to be deleted.
     constructor(

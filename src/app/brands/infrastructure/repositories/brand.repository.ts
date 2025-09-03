@@ -1,85 +1,97 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
 import { InjectRepository } from "@nestjs/typeorm";
 import { BrandEntity } from "../../domain/entities/brand.entity";
 import { Brand } from "../../domain/entities/brand";
 import { Repository } from "typeorm";
+import { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
+import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 
 @Injectable()
-export class BrandRepository{
+export class BrandRepository implements IBrandRepository{
 
 
     constructor(@InjectRepository(BrandEntity) private repo: Repository<BrandEntity>){};
 
-    // This method create a brand in the database.
-    async createBrand(brand: Brand): Promise<void> {
+    //
+    async existsByName(name: string, excludedId?:string): Promise<boolean> {
 
-        await this.repo.save(brand);
+        if(excludedId){
+
+            const duplicated = await this.repo.findOne({where:{name}});
+
+            return !!(duplicated && duplicated.id != excludedId);
+
+        }else{
+
+            const exists = await this.repo.existsBy({name});
+
+            return exists;
+
+        }
+
+    }
+
+    // This method create a brand in the database.
+    async save(brand: Brand): Promise<Brand> {
+
+        const exists = await this.existsByName(brand.getName());
+
+        if(exists) throw new BussinessError("Can not duplicate a brand name.");
+
+        const saved = await this.repo.save({ id : brand._id, name : brand.getName()});
+
+        return new Brand(saved.id,saved.name);
+
     }
 
     // This method gets all brands in the database.
-    async listAllBrands(): Promise<Brand[] | null> {
+    async findAll(): Promise<Brand[]> {
         
-        const entityList = await this.repo.find();
+        const entities = await this.repo.find();
 
-        return entityList;
+        return entities.map(e=> new Brand(e.id,e.name));
         
     }   
 
     // This method gets a brand by ID.
-    async getBrandById(id: string): Promise<Brand> {
+    async findById(id: string): Promise<Brand> {
 
         const entity = await this.repo.findOneBy({id});
 
-        if(entity){
+        if(!entity) throw new NotFoundException(`Brand with id: ${id} not found`);
 
-            return entity
-
-        }else{
-
-            throw new NotFoundException("Brand not found")
-
-        }
+        return new Brand(entity.id, entity.name)
 
     }
 
     // This method updates a brand in the database.
-    async updateBrand(brand: Brand): Promise<Brand> {
+    async update(brand: Brand): Promise<Brand> {
 
-        const entityExists = await this.repo.findOneBy({id: brand.id});
+        const exists = await this.existsByName(brand.getName(),brand._id);
 
-        if(entityExists){
+        if(exists) throw new BussinessError("Can not duplicate a brand name.");
 
-            entityExists.name = brand.name;
+        const entityExists = await this.repo.findOneBy({id: brand._id});
 
-            const updatedBrand = await this.repo.save(entityExists);
+        if(!entityExists) throw new NotFoundException("The brand to be updated does not exist.");
 
-            return updatedBrand;
+        entityExists.name = brand.getName();
 
-        }else{ 
+        const updatedBrand = await this.repo.save(entityExists);
 
-            throw new NotFoundException("The brand to be updated does not exist.");
+        return new Brand( updatedBrand.id, updatedBrand.name);
             
-        }
         
     }
 
     // This method deletes a brand from de database.
-    async deleteBrand(id: string): Promise<void> {
+    async delete(id: string): Promise<void> {
 
         const entity = await this.repo.findOneBy({id})
         
-        if(entity){
+        if(!entity) throw new NotFoundException("Brand not found");
 
-            this.repo.remove(entity);
-
-        }else{
-
-            throw new NotFoundException("Brand not found");
-
-        }
-
-        
+        this.repo.delete(id);
 
     }
 
