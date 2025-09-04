@@ -1,29 +1,25 @@
 import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import { DeleteBrandCommand } from "../commands/delete-brand.command";
 import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
-import { Inject, NotFoundException } from "@nestjs/common";
+import { Inject} from "@nestjs/common";
 import { DeletedResult } from "src/app/commons/utils/enums/deleted-resutls.enum";
-import { DeleteBrandResponseDto } from "../../presentations/dtos/response-delete-brand.dto";
+import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
 
+// Registers this class as the handler for the DeleteBrandCommand
 @CommandHandler(DeleteBrandCommand)
 export class DeleteBrandHandler implements ICommandHandler<DeleteBrandCommand>{
 
     constructor(
+        // Injects the repository implementation via its interface token
         @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository,
     ){}
 
-    async execute(command: DeleteBrandCommand): Promise<DeleteBrandResponseDto> {
+    async execute(command: DeleteBrandCommand): Promise<DeleteResponseDto> {
 
-        // The ID is extracted to verify later that the brand has been deleted.
-        const id = command.id;
-
-        // Verify if exists a brand with the id.
-        const brandExists = await this.brandRepo.findById(id);
-
-        // The method to remove the brand is executed.
+        // Executes the deletion logic using the repository and the provided brand ID
         await this.brandRepo.delete(command.id);
 
-        // We return an object that indicates the status of the brand and a deletion message.
+        // Returns a standardized response indicating successful deletion
         return {result: DeletedResult.DELETED ,message:"Brand deleted succesfully"}
 
     }

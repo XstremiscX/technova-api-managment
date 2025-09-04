@@ -1,6 +1,7 @@
+// This query allows you to obtain information about a specific brand.
 export class GetBrandByIdQuery{
 
-    // This query searches by ID, which is why it needs that filter.
+    // Receive the ID of the brand you are going to search for.
     constructor(
         public readonly id:string
     ){}

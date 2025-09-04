@@ -22,7 +22,7 @@ import { BrandMapper } from '../../presentations/mappers/brand.mapper';
   ],
   controllers: [BrandController],
   providers: [
-    // Repositorio como provider
+    // Repository
     {
       provide: "IBrandRepository",
       useClass: BrandRepository,

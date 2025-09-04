@@ -1,9 +1,8 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
-import { ICategoryEntity } from '../interfaces/icategory-entity.interface';
 import { ProductEntity } from 'src/app/products/domain/entities/product.entity';
 
 @Entity('categories')
-export class CategoryEntity implements ICategoryEntity {
+export class CategoryEntity{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -13,6 +12,7 @@ export class CategoryEntity implements ICategoryEntity {
     @Column({ type: 'text' })
     description: string;
 
+    // This statement creates the relationship between the products table and the categories table.
     @OneToMany(() => ProductEntity, product => product.category)
     products: ProductEntity[];
 }
