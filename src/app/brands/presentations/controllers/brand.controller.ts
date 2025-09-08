@@ -10,7 +10,8 @@ import { CreateBrandCommand } from "../../application/commands/create-brand.comm
 import { UpdateBrandDto } from "../dtos/update-brand.dto";
 import { UpdateBrandCommand } from "../../application/commands/update-brand.command";
 import { DeleteBrandCommand } from "../../application/commands/delete-brand.command";
-import { DeleteBrandResponseDto } from "../dtos/response-delete-brand.dto";
+import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
+import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 
 @Controller("brand")
 @ApiTags("brand")
@@ -23,7 +24,6 @@ export class BrandController {
     @Get()
     @ApiOperation({summary:"List all brands"})
     @ApiResponse({status:200, type:[BrandResponseDto]})
-    @ApiResponse({status:404, description:"Brands not found"})
     async listAllBrands():Promise<BrandResponseDto[]>{
         return this.queryBus.execute(new GetAllBrandsQuery());
     }
@@ -39,6 +39,7 @@ export class BrandController {
     @Post()
     @ApiOperation({summary:"Create new Brand"})
     @ApiResponse({status:201, type: BrandResponseDto})
+    @ApiResponse({status:400, type: BussinessError})
     @ApiResponse({status:500, description:"Internal server error."})
     async createBrand(@Body() createBrandDto: CreateBrandDto){
         return this.commandBus.execute(new CreateBrandCommand(createBrandDto.name));
@@ -54,7 +55,7 @@ export class BrandController {
 
     @Delete(':id')
     @ApiOperation({summary:"Delete Brand"})
-    @ApiResponse({status:200, type: DeleteBrandResponseDto})
+    @ApiResponse({status:200, type: DeleteResponseDto})
     async deleteBrand(@Param('id') id:string){
         return this.commandBus.execute(new DeleteBrandCommand(id))
     }

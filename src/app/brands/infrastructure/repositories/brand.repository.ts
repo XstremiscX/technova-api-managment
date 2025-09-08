@@ -8,36 +8,26 @@ import { BussinessError } from "src/app/commons/error_management/bussines errors
 import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
 
 @Injectable()
-export class BrandRepository implements IBrandRepository{
+export class BrandRepository implements IBrandRepository {
 
+    // Injects the repository for BrandEntity
+    constructor(@InjectRepository(BrandEntity) private repo: Repository<BrandEntity>) {}
 
-    constructor(@InjectRepository(BrandEntity) private repo: Repository<BrandEntity>){};
-
-    //
-    async existsByName(name: string, excludedId?:string): Promise<boolean> {
-
-        if(excludedId){
-
-            const duplicated = await this.repo.findOne({where:{name}});
-
-            return !!(duplicated && duplicated.id != excludedId);
-
-        }else{
-
-            const exists = await this.repo.existsBy({name});
-
-            return exists;
-
+    async existsByName(name: string, excludedId?: string): Promise<boolean> {
+        // Checks if a brand with the same name exists, optionally excluding a specific ID (used during updates)
+        if (excludedId) {
+            const duplicated = await this.repo.findOne({ where: { name } });
+            return !!(duplicated && duplicated.id !== excludedId);
+        } else {
+            return await this.repo.existsBy({ name });
         }
-
     }
 
     // This method create a brand in the database.
     async save(brand: Brand): Promise<BrandResponseDto> {
 
         const exists = await this.existsByName(brand.getName());
-
-        if(exists) throw new BussinessError("Can not duplicate a brand name.");
+        if (exists) throw new BussinessError("Can not duplicate a brand name.");
 
         const saved = await this.repo.save({ id : brand._id, name : brand.getName()});
 
@@ -50,7 +40,7 @@ export class BrandRepository implements IBrandRepository{
         
         const entities = await this.repo.find();
 
-        return entities.map(e=> {return {id:e.id,name:e.name}});
+        return entities.map(e=> new Brand(e.id,e.name));
         
     }   
 
@@ -72,27 +62,25 @@ export class BrandRepository implements IBrandRepository{
 
         if(exists) throw new BussinessError("Can not duplicate a brand name.");
 
-        const entityExists = await this.repo.findOneBy({id: brand._id});
+        // Ensures the brand exists before updating
+        const entityExists = await this.repo.findOneBy({ id: brand._id });
+        if (!entityExists) throw new NotFoundException("The brand to be updated does not exist.");
 
         if(!entityExists) throw new NotFoundException("The brand to be updated does not exist.");
 
         entityExists.name = brand.getName();
-
         const updatedBrand = await this.repo.save(entityExists);
 
         return {id: updatedBrand.id, name: updatedBrand.name};
 
     }
 
-    // This method deletes a brand from de database.
     async delete(id: string): Promise<void> {
+        // Ensures the brand exists before attempting deletion
+        const entity = await this.repo.findOneBy({ id });
+        if (!entity) throw new NotFoundException("Brand not found");
 
-        const entity = await this.repo.findOneBy({id})
-        
-        if(!entity) throw new NotFoundException("Brand not found");
-
-        this.repo.delete(id);
-
+        // Deletes the brand from the database
+        await this.repo.delete(id);
     }
-
 }
