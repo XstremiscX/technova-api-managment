@@ -1,41 +1,36 @@
 import { BadRequestException } from "@nestjs/common";
 
-// This class is the brand domain entity.
-export class Brand{
+// Domain entity representing a Brand with its business rules encapsulated
+export class Brand {
 
-    constructor (
+    constructor(
         public readonly _id: string,
-        private _name:string
-    ){
+        private _name: string
+    ) {
+        // Initializes the brand name with validation and formatting
         this.setName(_name);
     }
 
-    private validateName(name : string) : void {
-
-        if(!name || name.trim().length === 0){
-            throw new BadRequestException("Brand name cannot be empty")
+    // Validates that the brand name is not empty or just whitespace
+    private validateName(name: string): void {
+        if (!name || name.trim().length === 0) {
+            throw new BadRequestException("Brand name cannot be empty");
         }
-
     }
 
-    private setName(name : string) : void{
-        
+    // Applies validation and formatting to the brand name
+    private setName(name: string): void {
         this.validateName(name);
-
         this._name = name.trim().toUpperCase();
-
     }
 
-    rename(newName: string) : void{
-
+    // Public method to rename the brand, reusing internal validation
+    rename(newName: string): void {
         this.setName(newName);
-
     }
 
-    getName() : string{
-
+    // Returns the formatted brand name
+    getName(): string {
         return this._name;
-
     }
-
 }

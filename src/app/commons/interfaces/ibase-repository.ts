@@ -1,18 +1,18 @@
-export interface IBaseRepository<T>{
+export interface IBaseRepository<TDomain>{
 
     // Find an entity by id
-    findById(id:string):Promise<T>;
+    findById(id:string):Promise<TDomain>;
 
     // Find all entities
-    findAll():Promise<T[]>;
+    findAll():Promise<TDomain[]>;
 
     // Create a new entity
-    save(object: T):Promise<T>;
+    save(object: TDomain):Promise<TDomain>;
 
     // Deletes an entity from the database
     delete(id:string):Promise<void>;
 
     // Updates an entity in the database
-    update(object:T):Promise<T>;
+    update(object:TDomain):Promise<TDomain>;
 
 }
