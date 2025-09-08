@@ -24,7 +24,6 @@
 |   |   |   |--domain/                  *Represents the core business logic and rules, independent of frameworks or infrastructure.
 |   |   |   |   |--entities/            *Defines domain models with properties and behaviors.
 |   |   |   |   |--interfaces/          *Declares contracts (e.g. repository interfaces, service interfaces).
-|   |   |   |   |--validators/          *Contains business rule validations (e.g. value objects, guards).
 |   |   |   |--infrastructure/          *Implements technical details and external integrations (e.g. database, APIs).
 |   |   |   |   |--repositories/        *Implements domain repository interfaces using ORM or raw queries.
 |   |   |   |   |--services/            *Implements domain service interfaces with external dependencies.

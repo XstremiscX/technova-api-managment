@@ -6,31 +6,35 @@ import { Inject, NotFoundException} from "@nestjs/common";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 import { BrandMapper } from "../../presentations/mappers/brand.mapper";
 
+// Registers this class as the handler for UpdateBrandCommand in the CQRS flow
 @CommandHandler(UpdateBrandCommand)
-export class UpdateBrandHandler implements ICommandHandler<UpdateBrandCommand>{
+export class UpdateBrandHandler implements ICommandHandler<UpdateBrandCommand> {
 
     constructor(
+        // Injects the repository implementation via its interface token
         @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository,
-        private mapper : BrandMapper
-    ){}
+        
+        // Mapper used to convert the domain entity into a response DTO
+        private mapper: BrandMapper
+    ) {}
 
     async execute(command: UpdateBrandCommand): Promise<BrandResponseDto> {
-        
-        // Get the brand to update.
+        // Retrieves the Brand domain entity by ID using the repository
         const brand = await this.brandRepo.findById(command.id);
 
-        //
-        if(brand.getName() === command.newName.toUpperCase()) throw new BussinessError("The new name must be different from the current name.")
+        // Validates that the new name is actually different from the current one
+        if (brand.getName() === command.newName.toUpperCase()) {
+            throw new BussinessError("The new name must be different from the current name.");
+        }
 
-        // Rename the brand name.
+        // Applies the name change to the domain entity
         brand.rename(command.newName);
 
-        // We execute the method to update the brand and store the result.
+        // Persists the updated Brand entity using the repository
         const updatedBrand = await this.brandRepo.update(brand);
 
-        // Returns BrandResponseDto
+        // Maps the updated entity to a DTO and returns it
         return this.mapper.toResponseDto(updatedBrand);
-
     }
-
 }
+

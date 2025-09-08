@@ -40,4 +40,8 @@ npm install @nestjs/config
 echo "✅ Instalando @nestjs/passport passport passport-jwt @nestjs/jwt bcrypt"
 npm install @nestjs/passport passport passport-jwt @nestjs/jwt bcrypt
 
+# Install bcrypt types
+echo "Instalando @types/bcrypt"
+npm install -D @types/bcrypt
+
 echo "🎉 Instalación completa. Tu entorno está listo para construir la Technova API."

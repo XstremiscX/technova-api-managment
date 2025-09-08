@@ -5,6 +5,7 @@ import { Brand } from "../../domain/entities/brand";
 import { Repository } from "typeorm";
 import { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
+import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
 
 @Injectable()
 export class BrandRepository implements IBrandRepository{
@@ -32,7 +33,7 @@ export class BrandRepository implements IBrandRepository{
     }
 
     // This method create a brand in the database.
-    async save(brand: Brand): Promise<Brand> {
+    async save(brand: Brand): Promise<BrandResponseDto> {
 
         const exists = await this.existsByName(brand.getName());
 
@@ -40,32 +41,32 @@ export class BrandRepository implements IBrandRepository{
 
         const saved = await this.repo.save({ id : brand._id, name : brand.getName()});
 
-        return new Brand(saved.id,saved.name);
+        return {id: saved.id, name: saved.name};
 
     }
 
     // This method gets all brands in the database.
-    async findAll(): Promise<Brand[]> {
+    async findAll(): Promise<BrandResponseDto[]> {
         
         const entities = await this.repo.find();
 
-        return entities.map(e=> new Brand(e.id,e.name));
+        return entities.map(e=> {return {id:e.id,name:e.name}});
         
     }   
 
     // This method gets a brand by ID.
-    async findById(id: string): Promise<Brand> {
+    async findById(id: string): Promise<BrandResponseDto> {
 
         const entity = await this.repo.findOneBy({id});
 
         if(!entity) throw new NotFoundException(`Brand with id: ${id} not found`);
 
-        return new Brand(entity.id, entity.name)
+        return {id: entity.id, name: entity.name};
 
     }
 
     // This method updates a brand in the database.
-    async update(brand: Brand): Promise<Brand> {
+    async update(brand: Brand): Promise<BrandResponseDto> {
 
         const exists = await this.existsByName(brand.getName(),brand._id);
 
@@ -79,9 +80,8 @@ export class BrandRepository implements IBrandRepository{
 
         const updatedBrand = await this.repo.save(entityExists);
 
-        return new Brand( updatedBrand.id, updatedBrand.name);
-            
-        
+        return {id: updatedBrand.id, name: updatedBrand.name};
+
     }
 
     // This method deletes a brand from de database.

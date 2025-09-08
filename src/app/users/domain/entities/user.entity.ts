@@ -1,11 +1,10 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from 'typeorm';
-import { IUserEntity } from '../interfaces/iuser-entity.interface';
-import { UserTypeEntity } from '../../../users-type/domain/entities/user-type.entity';
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
 import { ProductEntity } from 'src/app/products/domain/entities/product.entity';
 import { SaleEntity } from 'src/app/sales/domain/entities/sale.entity';
+import { UserTypeEnum } from 'src/app/commons/utils/enums/users-type.enum';
 
 @Entity('users')
-export class UserEntity implements IUserEntity {
+export class UserEntity{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -24,9 +23,8 @@ export class UserEntity implements IUserEntity {
     @Column({ type: 'text' })
     password: string;
 
-    // This statement generates the relationship between the user type table and the user, bringing the ID of the user type that it is.
-    @ManyToOne(() => UserTypeEntity, (type) => type.users)
-    type: UserTypeEntity;
+    @Column({type:'int'})    
+    type: UserTypeEnum;
 
     @Column({ type: 'boolean', default: true }) // User state false:deleted, true:active
     status: boolean;
