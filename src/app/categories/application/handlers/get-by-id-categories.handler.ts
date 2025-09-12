@@ -23,6 +23,6 @@ export class GetByIdCategoryHandler implements IQueryHandler<GetByIdCategoryQuer
         const category = await this.categoryRepo.findById(query.id);
 
         // Maps the domain entity to a DTO and returns it
-        return this.mapper.toResponseDto(category);
+        return this.mapper.toResponseDtoFromDomain(category);
     }
 }

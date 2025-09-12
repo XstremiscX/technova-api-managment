@@ -21,10 +21,5 @@ export class UserResponseDto{
     
     @ApiProperty({description:"User address",example:"Colombia,Antioquia,Medellín,calle 00,00-00,potalcode"})
     address:string;
-
-    // This statement allows you to display the ID and type of user to which the user belongs.
     
-    @ApiProperty({description:"User type object", example:UserTypeEnum.SELLER})
-    type: UserTypeEnum;
-
 }

@@ -23,7 +23,7 @@ export class GetAllCategoriesHandler implements IQueryHandler<GetAllCategoriesQu
         const categories =  await this.categoryRepo.findAll();
 
         // Maps each Category entity to a response DTO and returns the full list
-        return categories.map((e)=>{return this.mapper.toResponseDto(e)});
+        return categories.map(category => this.mapper.toResponseDtoFromDomain(category));
 
     }
 

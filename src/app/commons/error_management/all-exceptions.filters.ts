@@ -10,8 +10,18 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     if (exception instanceof HttpException) {
       const status = exception.getStatus();
-      const message = exception.message || 'Unexpected error';
-      return response.status(status).json({ statusCode: status, message });
+      const exceptionResponse = exception.getResponse();
+
+      // Si el response es un objeto con message, lo usamos
+      if (typeof exceptionResponse === 'object') {
+        return response.status(status).json(exceptionResponse);
+      }
+
+      // Si no, usamos el mensaje genérico
+      return response.status(status).json({
+        statusCode: status,
+        message: exception.message || 'Unexpected error',
+      });
     }
 
     const httpException = ErrorHandler.map(exception);

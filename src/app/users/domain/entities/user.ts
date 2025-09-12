@@ -39,42 +39,6 @@ export class User{
         return newData;
     }
 
-    changeName(newName:string):void{
-        // The method that validates that the two pieces of data are different is executed.
-        this.name = this.validateDifference(this.name,newName,"name");
-    }
-
-    changeEmail(newEmail:string):void{
-        // The method that validates that the two pieces of data are different is executed.
-        this.email = this.validateDifference(this.email,newEmail,"email");
-    }
-
-    changePhoneNumber(newPhone:string):void{
-        // The method that validates that the two pieces of data are different is executed.
-        this.phone = this.validateDifference(this.phone,newPhone,"phone");
-    }
-
-    changeAddress(newAddress:string):void{
-        if(this.address === undefined) throw new BadRequestException("The user does not have an address to change.");
-        // The method that validates that the two pieces of data are different is executed.
-        this.address = this.validateDifference(this.address, newAddress, "address");
-    }
-
-    changePassword(newHashedPassword:string){    
-        this.password = newHashedPassword;
-    }
-
-    changeStatus():void{
-        // If the user status is true (active), it is changed to false (inactive); otherwise, it is changed from false to true.
-        this.status = !this.status;
-    }
-
-    verify():void{
-        if(this.verified) throw new BussinessError("The user is already verified.")
-        // Change the verification status to true
-        this.verified = true;
-    }
-
     // Returns the user name.
     getName():string{
         return this.name;
@@ -109,9 +73,5 @@ export class User{
     getVerified():boolean{
         return this.verified;
     }
-
-    getPasswordHash():string{
-
-        return this.password;
-    }
+    
 }

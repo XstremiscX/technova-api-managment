@@ -1,20 +1,21 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsStrongPassword } from "class-validator";
+import { Transform } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger"; // The ApiProperty decorator allows Swagger to identify a property of the input or output data of an endpoint. 
 
 export class UpdatePasswordDto{
-
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({description:"current password", example:"currentPassword123"})
-    current_password:string;
     
     @IsString()
+    @Transform(({value}) =>  value.trim())
     @IsNotEmpty()
+    @IsStrongPassword()
     @ApiProperty({description:"new user password", example:"newPassword123"})
-    new_password:string;
+    newPassword:string;
 
     @IsString()
+    @Transform(({value}) =>  value.trim())
     @IsNotEmpty()
-    @ApiProperty({description:"confirm new password", example:"newPassword123"})
-    confirm_password:string;
+    @IsStrongPassword()
+    @ApiProperty({description:"new user password", example:"newPassword123"})
+    confirmPassword:string;
+
 }

@@ -4,10 +4,11 @@ import { Transform } from "class-transformer";
 
 export class CreateBrandDto{
 
-    @Transform(({value}) => typeof value === "string" ? value.trim() : value)
+    
     @IsString()
+    @Transform(({value})=>{return value.trim()})
     @IsNotEmpty()
-    @MaxLength(100,{message:"Brand name is too long"})
+    @MaxLength(50,{message:"Brand name is too long"})
     @ApiProperty({description:"Brand name", example:"ASUS"})
     name:string;
 

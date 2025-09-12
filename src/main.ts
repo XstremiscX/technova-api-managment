@@ -9,12 +9,16 @@ import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { mkdirSync } from 'fs';
 import { AllExceptionsFilter } from './app/commons/error_management/all-exceptions.filters';
+import { UnprocessableEntityException } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
+    transform: true,
+    forbidNonWhitelisted: true,
+    enableDebugMessages: true,
   }));
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));

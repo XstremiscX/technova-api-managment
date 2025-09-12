@@ -13,8 +13,8 @@ import { DeleteBrandCommand } from "../../application/commands/delete-brand.comm
 import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 
-@Controller("brand")
-@ApiTags("brand")
+@Controller("brands")
+@ApiTags("brands")
 export class BrandController {
     constructor(
         private readonly commandBus: CommandBus,
@@ -39,7 +39,7 @@ export class BrandController {
     @Post()
     @ApiOperation({summary:"Create new Brand"})
     @ApiResponse({status:201, type: BrandResponseDto})
-    @ApiResponse({status:400, type: BussinessError})
+    @ApiResponse({status:400, description:"Business error"})
     @ApiResponse({status:500, description:"Internal server error."})
     async createBrand(@Body() createBrandDto: CreateBrandDto){
         return this.commandBus.execute(new CreateBrandCommand(createBrandDto.name));

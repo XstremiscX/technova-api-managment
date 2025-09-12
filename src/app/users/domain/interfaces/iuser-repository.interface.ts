@@ -1,7 +1,17 @@
-import { IBaseRepository } from "src/app/commons/interfaces/ibase-repository";
 import { User } from "../entities/user";
-import { UserResponseDto } from "../../presentations/dtos/response-user.dto";
+import { UserPublicView } from "../../presentations/views/user-public.view";
 
-export interface IUserRepository extends IBaseRepository<User,UserResponseDto>{
+export interface IUserRepository{
 
+    save(user: User): Promise<UserPublicView>;
+
+    update(userPublicVewi:UserPublicView): Promise<UserPublicView>;
+
+    findById(id:string):Promise<UserPublicView>;
+
+    existsByEmail(email:string, excludeUserId?: string):Promise<boolean>;
+
+    softDelete(id:string):Promise<void>;
+
+    updatePassword(id:string, newPassword:string):Promise<void>;
 }

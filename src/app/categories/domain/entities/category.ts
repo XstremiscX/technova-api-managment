@@ -1,16 +1,17 @@
 import { BadRequestException } from "@nestjs/common";
+import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 
 // Domain entity representing a Category with its business rules encapsulated
 export class Category {
 
     constructor(
-        public readonly _id: string,
-        private _name: string,
-        private _description: string,
+        public readonly id: string,
+        private name: string,
+        private description: string,
     ) {
         // Initializes the category with validated name and description
-        this.setName(_name);
-        this.setDescription(_description);
+        this.setName(name);
+        this.setDescription(description);
     }
 
     // Validates that the name is not empty or undefined
@@ -22,36 +23,40 @@ export class Category {
 
     // Validates that the description is not empty or undefined
     private validateDescription(description: string): void {
-        if (!description || description.trim().length === 0) {
-            throw new BadRequestException("Category description must be different from undefined");
+        if (description.trim().length === 0) {
+            throw new BadRequestException("Category description must be different from void");
         }
     }
 
     // Applies validation and sets the internal name
     private setName(name: string): void {
         this.validateName(name);
-        this._name = name;
+        this.name = name;
     }
 
     // Applies validation and sets the internal description
     private setDescription(description: string): void {
         this.validateDescription(description);
-        this._description = description;
+        this.description = description;
     }
 
     // Returns the category name
     getName(): string {
-        return this._name;
+        return this.name;
     }
 
     // Returns the category description
     getDescription(): string {
-        return this._description;
+        return this.description;
     }
 
     // Public method to rename the category, reusing internal validation
     rename(newName: string): void {
+
+        if(this.name === newName) throw new BussinessError("The new name and the current name must be differents.");
+
         this.setName(newName);
+        
     }
 
     // Public method to change the description, reusing internal validation

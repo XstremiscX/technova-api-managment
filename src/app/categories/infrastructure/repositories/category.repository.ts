@@ -6,12 +6,15 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 import { NotFoundException } from "@nestjs/common";
+import { CategoryResponseDto } from "../../presentations/dtos/response-category.dto";
+import { CategoryMapper } from "../../presentations/mappers/category.mapper";
 
 @Injectable()
 export class CategoryRepository implements ICategoryRepository {
 
     // Injects the TypeORM repository for the CategoryEntity
-    constructor(@InjectRepository(CategoryEntity) private repo: Repository<CategoryEntity>) {}
+    constructor(@InjectRepository(CategoryEntity) private repo: Repository<CategoryEntity>,
+    private mapper: CategoryMapper) {}
 
     async existsByName(name: string, excludedId?: string): Promise<boolean> {
         // Checks whether a category with the given name already exists
@@ -31,40 +34,42 @@ export class CategoryRepository implements ICategoryRepository {
 
         // Persists the category and returns a domain entity
         const saved = await this.repo.save({
-            id: category._id,
+            id: category.id,
             name: category.getName(),
             description: category.getDescription()
         });
 
-        return new Category(saved.id, saved.name, saved.description);
+        return this.mapper.toDomainFromEntity(saved);
     }
 
     async findAll(): Promise<Category[]> {
-        // Retrieves all categories and maps them to domain entities
+        // Retrieves all categories and maps them to response DTOs
         const entities = await this.repo.find();
-        return entities.map(e => new Category(e.id, e.name, e.description));
+        return entities.map(e => this.mapper.toDomainFromEntity(e));
     }
 
     async findById(id: string): Promise<Category> {
         // Retrieves a category by ID or throws if not found
         const entity = await this.repo.findOneBy({ id });
         if (!entity) throw new NotFoundException(`Category with id: ${id} not found`);
-        return new Category(entity.id, entity.name, entity.description);
+        if (entity.description === "") entity.description = "No description";
+        return this.mapper.toDomainFromEntity(entity);
     }
 
     async update(category: Category): Promise<Category> {
-        // Validates uniqueness before updating
-        const exists = await this.existsByName(category.getName(), category._id);
-        if (exists) throw new BussinessError("Can not duplicate a Category name.");
-
         // Ensures the category exists before updating
-        const entityExists = await this.repo.findOneBy({ id: category._id });
+        const entityExists = await this.repo.findOneBy({ id: category.id });
         if (!entityExists) throw new NotFoundException("The Category to be updated does not exist.");
+
+        // Validates uniqueness before updating
+        const exists = await this.existsByName(category.getName(), category.id);
+        if (exists) throw new BussinessError("Can not duplicate a Category name.");
 
         // Applies the update and returns the updated domain entity
         entityExists.name = category.getName();
+        entityExists.description = category.getDescription();
         const updatedCategory = await this.repo.save(entityExists);
-        return new Category(updatedCategory.id, updatedCategory.name, updatedCategory.description);
+        return this.mapper.toDomainFromEntity(updatedCategory);
     }
 
     async delete(id: string): Promise<void> {

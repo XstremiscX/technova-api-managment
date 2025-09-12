@@ -1,14 +1,16 @@
 import { BadRequestException } from "@nestjs/common";
+import { v4 as uuid } from "uuid";
 
 // Domain entity representing a Brand with its business rules encapsulated
 export class Brand {
 
     constructor(
-        public readonly _id: string,
-        private _name: string
+        private name: string,
+        public readonly id?: string
     ) {
         // Initializes the brand name with validation and formatting
-        this.setName(_name);
+        this.setName(name);
+        this.id = id ? id : uuid();
     }
 
     // Validates that the brand name is not empty or just whitespace
@@ -19,18 +21,22 @@ export class Brand {
     }
 
     // Applies validation and formatting to the brand name
-    private setName(name: string): void {
+    private setName(name: string): boolean | void {
         this.validateName(name);
-        this._name = name.trim().toUpperCase();
+        this.name = name.trim().toUpperCase();
     }
 
     // Public method to rename the brand, reusing internal validation
     rename(newName: string): void {
+        // Validates that the new name is actually different from the current one
+        if(this.name === newName.toUpperCase()) {
+            throw new BadRequestException("The new name must be different from the current name.");
+        }
         this.setName(newName);
     }
 
     // Returns the formatted brand name
     getName(): string {
-        return this._name;
+        return this.name;
     }
 }

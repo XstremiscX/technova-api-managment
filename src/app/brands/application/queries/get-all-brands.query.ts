@@ -1,4 +1,4 @@
-// This query allows you to obtain all brands.
+// Query that retrieves all brands
 export class GetAllBrandsQuery{
-    // This class is empty because it does not need a filter.
+
 }

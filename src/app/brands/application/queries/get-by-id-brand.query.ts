@@ -1,9 +1,6 @@
-// This query allows you to obtain information about a specific brand.
+// Query that obtains information about a brand with the provided ID
 export class GetBrandByIdQuery{
-
-    // Receive the ID of the brand you are going to search for.
     constructor(
         public readonly id:string
     ){}
-
 }

@@ -5,8 +5,8 @@ import { CategoryMapper } from "../../presentations/mappers/category.mapper";
 import { UpdateCategoryCommand } from "../commands/update-category.command";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 import { CategoryResponseDto } from "../../presentations/dtos/response-category.dto";
+import { Category } from "../../domain/entities/category";
 
-<<<<<<< HEAD
 // Registers this class as the handler for UpdateCategoryCommand in the CQRS flow
 @CommandHandler(UpdateCategoryCommand)
 export class UpdateCategoryHandler implements ICommandHandler<UpdateCategoryCommand> {
@@ -21,53 +21,19 @@ export class UpdateCategoryHandler implements ICommandHandler<UpdateCategoryComm
 
     async execute(command: UpdateCategoryCommand): Promise<CategoryResponseDto> {
         // Retrieves the Category domain entity by ID using the repository
-        const category = await this.categoryRepo.findById(command.id);
-
-        // Validates that the new name is actually different from the current one
-        if (category.getName() === command.newName) {
-            throw new BussinessError("The new name must be different from the current name.");
-        }
+        const categoryUpdate = await this.categoryRepo.findById(command.id);
 
         // Applies the name change to the domain entity
-        category.rename(command.newName);
-
+        categoryUpdate.rename(command.newName);     
+    
         // Optionally updates the description if a new one is provided
-        if (command.newDescription) {
-            category.changeDescription(command.newDescription);
-        }
+        const category = new Category(categoryUpdate.id, categoryUpdate.getName(), command.newDescription ?? categoryUpdate.getDescription());
 
         // Persists the updated Category entity using the repository
         const updated = await this.categoryRepo.update(category);
 
         // Maps the updated entity to a DTO and returns it
-        return this.mapper.toResponseDto(updated);
-    }
-}
-=======
-
-@CommandHandler(UpdateCategoryCommand)
-export class UpdateCategoryHandler implements ICommandHandler<UpdateCategoryCommand>{
-
-    constructor(
-        @Inject("ICategoryRepository") private categoryRepo: ICategoryRepository,
-        private mapper: CategoryMapper
-    ){}
-
-    async execute(command: UpdateCategoryCommand): Promise<CategoryResponseDto> {
-        
-        const category = await this.categoryRepo.findById(command.id);
-        
-        if(category.getName() === command.newName) throw new BussinessError("The new name must be different from the current name.");
-
-        category.rename(command.newName)
-
-        if(command.newDescription) category.changeDescription(command.newDescription);
-
-        const updated = await this.categoryRepo.update(category);
-
-        return this.mapper.toResponseDto(updated);
-
+        return this.mapper.toResponseDtoFromDomain(updated);
     }
 
 }
->>>>>>> master

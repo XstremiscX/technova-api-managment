@@ -3,7 +3,6 @@ import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository
 import { Brand } from "../../domain/entities/brand";
 import { CreateBrandCommand } from "../commands/create-brand.command";
 import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
-import { v4 as uuid } from 'uuid';
 import { Inject } from "@nestjs/common";
 import { BrandMapper } from "../../presentations/mappers/brand.mapper";
 
@@ -22,13 +21,13 @@ export class CreateBrandHandler implements ICommandHandler<CreateBrandCommand>{
     async execute(command: CreateBrandCommand): Promise<BrandResponseDto> {
 
         // Creates a new Brand domain entity using a generated UUID and the name from the command
-        const brand = new Brand(uuid(),command.name);
+        const brand = new Brand(command.name);
 
         // Persists the new Brand using the repository
         const saved = await this.brandRepo.save(brand);
 
         // Maps the saved Brand to a DTO and returns it
-        return this.mapper.toResponseDto(saved);
+        return this.mapper.toResponseDtoFromDomain(saved);
 
     }
 
