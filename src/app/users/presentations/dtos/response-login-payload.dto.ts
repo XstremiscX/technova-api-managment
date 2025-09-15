@@ -1,6 +1,5 @@
-import { Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
-import { UserTypeResponseDto } from "../../../users-type/presentations/dtos/response-user-type.dto";
+import { UserTypeEnum } from "src/app/commons/utils/enums/users-type.enum";
 
 export class LoginPayloadResponseDto{
 
@@ -10,8 +9,7 @@ export class LoginPayloadResponseDto{
     @ApiProperty({description:"User email", example:"useremailexample@gmail.com"})
     email:string;
 
-    @ApiProperty({description:"User type", type: ()=> UserTypeResponseDto})
-    @Type(()=>UserTypeResponseDto)
-    type: UserTypeResponseDto;
+    @ApiProperty({description:"User type", example: UserTypeEnum.ADMIN})
+    type: UserTypeEnum;
 
 }

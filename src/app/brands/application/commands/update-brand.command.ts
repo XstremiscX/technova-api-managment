@@ -1,6 +1,5 @@
-// This command allows you to update the data for a category.
+// Command that receives a new name and ID, to update the brand name.
 export class UpdateBrandCommand{
-    // Receive a new name to update and the brand ID.
     constructor(
         public readonly newName: string,
         public readonly id: string,

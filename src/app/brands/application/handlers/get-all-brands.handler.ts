@@ -22,7 +22,6 @@ export class GetAllBrandsHandler implements IQueryHandler<GetAllBrandsQuery>{
         const brandList = await this.brandRepo.findAll();
 
         // Maps each Brand entity to a response DTO and returns the full list
-        return brandList.map(e => {return this.mapper.toResponseDto(e)});
-        
+        return brandList.map(brand => this.mapper.toResponseDtoFromDomain(brand)); 
     }
 }

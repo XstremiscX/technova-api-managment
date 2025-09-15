@@ -1,5 +1,9 @@
-export abstract class BaseMapper<T,Dto>{
+export abstract class BaseMapper<Domain,Dto,Entity>{
 
-    abstract toResponseDto(object: T):Dto;
+    abstract toResponseDtoFromDomain(object: Domain):Dto;
+
+    abstract toEntityFromDomain(object: Domain):Entity;
+
+    abstract toDomainFromEntity(object: Entity):Domain;
 
 }

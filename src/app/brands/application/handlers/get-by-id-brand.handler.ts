@@ -21,8 +21,11 @@ export class GetBrandByIdHandler implements IQueryHandler<GetBrandByIdQuery> {
         // Retrieves the Brand domain entity by ID using the repository
         const brand = await this.brandRepo.findById(query.id);
 
+        // If the brand is not found, throws a NotFoundException
+        if(!brand) throw new NotFoundException(`Brand with id ${query.id} not found`);
+
         // Maps the domain entity to a DTO and returns it
-        return this.mapper.toResponseDto(brand);
+        return this.mapper.toResponseDtoFromDomain(brand);
     }
 }
 

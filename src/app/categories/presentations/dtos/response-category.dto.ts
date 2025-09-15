@@ -7,5 +7,8 @@ export class CategoryResponseDto{
 
     @ApiProperty({description:"Category name", example:"PC"})
     name:string;
+
+    @ApiProperty({description:"Category description", example:"High performance computers"})
+    description:string;
     
 }

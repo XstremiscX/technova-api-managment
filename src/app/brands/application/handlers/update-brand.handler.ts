@@ -5,32 +5,31 @@ import { BrandResponseDto } from "../../presentations/dtos/response-brand.dto";
 import { Inject, NotFoundException} from "@nestjs/common";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 import { BrandMapper } from "../../presentations/mappers/brand.mapper";
+import { Brand } from "../../domain/entities/brand";
 
+// Registers this class as the handler for UpdateBrandCommand in the CQRS flow
 @CommandHandler(UpdateBrandCommand)
-export class UpdateBrandHandler implements ICommandHandler<UpdateBrandCommand>{
+export class UpdateBrandHandler implements ICommandHandler<UpdateBrandCommand> {
 
     constructor(
+        // Injects the repository implementation via its interface token
         @Inject("IBrandRepository") private readonly brandRepo: IBrandRepository,
-        private mapper : BrandMapper
-    ){}
+        
+        // Mapper used to convert the domain entity into a response DTO
+        private mapper: BrandMapper
+    ) {}
 
     async execute(command: UpdateBrandCommand): Promise<BrandResponseDto> {
-        
-        // Get the brand to update.
+        // Retrieves the Brand response DTO by ID using the repository
         const brand = await this.brandRepo.findById(command.id);
 
-        //
-        if(brand.getName() === command.newName.toUpperCase()) throw new BussinessError("The new name must be different from the current name.")
-
-        // Rename the brand name.
+        // Applies the name change to the brand response DTO
         brand.rename(command.newName);
 
-        // We execute the method to update the brand and store the result.
+        // Persists the updated Brand entity using the repository
         const updatedBrand = await this.brandRepo.update(brand);
 
-        // Returns BrandResponseDto
-        return this.mapper.toResponseDto(updatedBrand);
-
+        // Maps the updated entity to a DTO and returns it
+        return this.mapper.toResponseDtoFromDomain(updatedBrand);
     }
-
 }

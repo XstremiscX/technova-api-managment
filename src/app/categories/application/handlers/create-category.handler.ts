@@ -27,8 +27,8 @@ export class CreateCategoryHandler implements ICommandHandler<CreateCategoryComm
         // Persists the new Category using the repository
         const save = await this.categoryRepo.save(category);
 
-        // Maps the saved Brand to a DTO and returns it
-        return this.mapper.toResponseDto(save);
+        // Returns the saved category
+        return this.mapper.toResponseDtoFromDomain(save);
         
     }
 

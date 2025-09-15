@@ -3,9 +3,6 @@ export interface IBaseRepository<TDomain>{
     // Find an entity by id
     findById(id:string):Promise<TDomain>;
 
-    // Find all entities
-    findAll():Promise<TDomain[]>;
-
     // Create a new entity
     save(object: TDomain):Promise<TDomain>;
 
@@ -14,5 +11,8 @@ export interface IBaseRepository<TDomain>{
 
     // Updates an entity in the database
     update(object:TDomain):Promise<TDomain>;
+
+    // Retrieves all entities from the database
+    findAll():Promise<TDomain[]>;
 
 }
