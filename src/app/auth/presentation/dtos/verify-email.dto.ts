@@ -1,0 +1,12 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
+import { IsNotEmpty, IsString } from "class-validator";
+
+export class VerifyEmailDto{
+    
+    @IsString()
+    @Transform(({value})=>{return value.trim()})
+    @IsNotEmpty()
+    @ApiProperty({description:"User ID for verification", example:"12j32-sda34-2ewfr-4trw"})
+    id:string
+}
