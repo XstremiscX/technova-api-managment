@@ -14,11 +14,14 @@ import { GetBrandByIdHandler } from '../../application/handlers/get-by-id-brand.
 import { CreateBrandHandler } from '../../application/handlers/create-brand.handler';
 
 import { BrandMapper } from '../../presentations/mappers/brand.mapper';
+import { AuthModule } from 'src/app/auth/infrastructure/modules/auth.module';
+import { TokenService } from 'src/app/auth/infrastructure/services/token.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([BrandEntity]),
     CqrsModule,
+    AuthModule
   ],
   controllers: [BrandController],
   providers: [

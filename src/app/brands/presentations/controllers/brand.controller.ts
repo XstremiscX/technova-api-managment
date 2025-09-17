@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Put, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Get } from "@nestjs/common";
@@ -11,7 +11,8 @@ import { UpdateBrandDto } from "../dtos/update-brand.dto";
 import { UpdateBrandCommand } from "../../application/commands/update-brand.command";
 import { DeleteBrandCommand } from "../../application/commands/delete-brand.command";
 import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
-import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
+import { AuthGuard } from "src/app/auth/infrastructure/guards/auth.guard";
+import { Roles } from "src/app/auth/infrastructure/decorators/roles.decorator";
 
 @Controller("brands")
 @ApiTags("brands")
@@ -41,6 +42,8 @@ export class BrandController {
     @ApiResponse({status:201, type: BrandResponseDto})
     @ApiResponse({status:400, description:"Business error"})
     @ApiResponse({status:500, description:"Internal server error."})
+    @UseGuards(AuthGuard)
+    @Roles('ADMIN')
     async createBrand(@Body() createBrandDto: CreateBrandDto){
         return this.commandBus.execute(new CreateBrandCommand(createBrandDto.name));
     }
@@ -49,6 +52,8 @@ export class BrandController {
     @ApiOperation({summary:"Update Brand"})
     @ApiResponse({status:200, type:BrandResponseDto})
     @ApiResponse({status:400, description:"Bad request"})
+    @UseGuards(AuthGuard)
+    @Roles('ADMIN')
     async updateBrand(@Param('id') id:string, @Body() updateBrandDto: UpdateBrandDto){
         return this.commandBus.execute(new UpdateBrandCommand(updateBrandDto.name,id));
     }
@@ -56,6 +61,8 @@ export class BrandController {
     @Delete(':id')
     @ApiOperation({summary:"Delete Brand"})
     @ApiResponse({status:200, type: DeleteResponseDto})
+    @UseGuards(AuthGuard)
+    @Roles('ADMIN')
     async deleteBrand(@Param('id') id:string){
         return this.commandBus.execute(new DeleteBrandCommand(id))
     }

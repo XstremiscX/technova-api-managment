@@ -6,6 +6,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../../domain/entities/user";
 import { UserMapper } from "../../presentations/mappers/user.mapper";
 import { UserPublicView } from "../../presentations/views/user-public.view";
+import { LoginUserView } from "src/app/auth/presentation/views/login-user.view";
 
 @Injectable()
 export class UserRepository implements IUserRepository{
@@ -32,6 +33,19 @@ export class UserRepository implements IUserRepository{
 
     }
 
+    async findByEmail(email:string):Promise<LoginUserView>{
+
+        if(!email) throw new BadRequestException("Email is required.");
+
+        const userEntity = await this.repo.findOne({where:{verified:true,status:true},select:['id','email','type','password']});
+
+        if(!userEntity) throw new NotFoundException(`User with email ${email} doesn't exists`);
+
+        return new LoginUserView(userEntity.id,userEntity.email,userEntity.password,userEntity.type);
+
+
+    }
+
     /**
     * Retrieves a user by ID and maps it to a public view.
     * Throws if the user is not found or inactive.
@@ -40,11 +54,11 @@ export class UserRepository implements IUserRepository{
         
         if(!id) throw new BadRequestException("Id is required.");
 
-        const entity = await this.repo.findOne({where:{id,status:true}, select:['id','name','email','phone','address']});
+        const userEntity = await this.repo.findOne({where:{id,status:true}, select:['id','name','email','phone','address']});
 
-        if(!entity) throw new NotFoundException("User not found.");
+        if(!userEntity) throw new NotFoundException("User not found.");
 
-        return this.mapper.toUserPublicViewFromEntity(entity);
+        return this.mapper.toUserPublicViewFromEntity(userEntity);
 
     }
 
@@ -124,11 +138,25 @@ export class UserRepository implements IUserRepository{
 
         if(!hashedPassword) throw new BadRequestException("Password is required.");
     
-        const entityExists = await this.repo.findOneBy({id});
+        const entityExists = await this.repo.findOne({where:{id,status:true}, select:['password']});
 
         if(!entityExists) throw new NotFoundException("User not found.");
 
         await this.repo.update(id,{password:hashedPassword});
+
+    }
+
+    async verifyUserEmail(id:string):Promise<any>{
+
+        const userExists = await this.repo.findOne({where:{id:id,status:true},select:['verified']})
+
+        if(!userExists) throw new NotFoundException('User Not found');
+
+        if(userExists.verified) return {VerificationSucceded: false, message:"The user's email address has already been verified."};
+
+        await this.repo.update(id,{verified:true});
+
+        return {verificationSucceded:true, message:"Email verification completed successfully"}
 
     }
 

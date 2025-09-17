@@ -4,7 +4,7 @@ import { DatabaseModule } from './app/commons/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { CategoryModule } from './app/categories/infrastructure/modules/category.module';
 import { UsersModule } from './app/users/infrastructure/modules/users.module';
-import { User } from './app/users/domain/entities/user';
+import { AuthModule } from './app/auth/infrastructure/modules/auth.module';
 
 @Module({
   imports: [
@@ -12,7 +12,9 @@ import { User } from './app/users/domain/entities/user';
     BrandModule, 
     DatabaseModule,
     CategoryModule,
-    UsersModule],
+    UsersModule,
+    AuthModule
+  ],
   controllers: [],
   providers: [],
 })  

@@ -1,5 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import * as bcrypt from 'bcrypt';
+import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 
 // Service for handling password-related operations
 @Injectable()
@@ -9,7 +10,7 @@ export class PasswordService{
         // Compare a plain text password with a hashed password using bcrypt.
         const isSamePassword = bcrypt.compareSync(newPassword, currentPassword);
 
-        if(isSamePassword)throw new Error("The new password must be different from the current password.");
+        if(isSamePassword)throw new BussinessError("The new password must be different from the current password.");
 
         return isSamePassword;
     }
@@ -20,4 +21,10 @@ export class PasswordService{
         return bcrypt.hashSync(password, salt);
     }
 
+    verifyPassword(password:string,hashedPassword:string): boolean{
+
+        const isValid = bcrypt.compareSync(password,hashedPassword);
+        
+        return isValid;
+    }
 }

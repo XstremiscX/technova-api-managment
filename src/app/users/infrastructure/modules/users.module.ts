@@ -37,6 +37,11 @@ import { PasswordService } from "../services/password.service";
 
         // ServicesP
         PasswordService
+    ],
+    exports:[
+        TypeOrmModule,
+        UserMapper,
+        PasswordService
     ]
 })
 export class UsersModule{}
