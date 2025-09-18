@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LoginDto } from "../dtos/login.dto";
@@ -25,7 +25,7 @@ export class AuthController{
     @ApiOperation({summary:"Endpoint to verify an user email."})
     @ApiResponse({status:200})
     @ApiResponse({status:404, example:"User Not found."})
-    @Patch(':id')
+    @Get(':id')
     async verifyUserEmail(@Param('id') id:string){
         return this.commandBus.execute(new VerifyEmailCommand(id));
     }

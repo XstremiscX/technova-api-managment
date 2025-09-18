@@ -15,17 +15,30 @@ export class AuthGuard implements CanActivate {
     
     const token = request.headers.authorization?.split(' ')[1];
 
+    const path = request.route.path;
+
+    const paramId = request.params.id;
+
     if (!token) throw new UnauthorizedException('Token is missing');
 
     const payload = this.tokenService.verifyToken(token);
+
+    // Solo aplicar esta lógica si la ruta incluye /users/:id
+    if (path.includes('/users/') && paramId) {
+      if (payload.userId !== paramId) {
+        throw new ForbiddenException("You can only modify your own data.");
+      }
+    }
     
     request.user = payload;
 
     const requiredRoles = this.reflector.get<string[]>('roles', context.getHandler());
+
     if (requiredRoles && !requiredRoles.includes(payload.userType)) {
       throw new ForbiddenException('Access denied: insufficient role');
     }
 
     return true;
+
   }
 }

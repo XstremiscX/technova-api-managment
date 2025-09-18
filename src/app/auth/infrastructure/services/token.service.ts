@@ -3,6 +3,7 @@ import { ITokenService } from "../../domain/interfaces/itoken-service.interface"
 import { JwtService } from "@nestjs/jwt";
 import * as dotenv from "dotenv";
 import { UserTypeEnum } from "src/app/commons/utils/enums/users-type.enum";
+import { TokenPayloadDto } from "../../presentation/dtos/token-payload.dto";
 
 dotenv.config()
 
@@ -29,7 +30,7 @@ export class TokenService implements ITokenService{
 
     }
 
-    verifyToken(token: string):any{
+    verifyToken(token: string):TokenPayloadDto{
 
         return this.jwtService.verify(token)
 

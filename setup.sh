@@ -44,4 +44,13 @@ npm install @nestjs/passport passport passport-jwt @nestjs/jwt bcrypt
 echo "Instalando @types/bcrypt"
 npm install -D @types/bcrypt
 
+# Install Event Emitter
+echo "Instalando @nestjs/event-emitter"
+npm install @nestjs/event-emitter
+
+# Install nodemailer
+echo "@nestjs-modules/mailer nodemailer"
+npm install @nestjs-modules/mailer nodemailer
+npm install @types/nodemailer
+
 echo "🎉 Instalación completa. Tu entorno está listo para construir la Technova API."
