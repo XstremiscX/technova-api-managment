@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Param } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Param, UseFilters, UseGuards } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { Get, Post, Delete, Patch, Put } from "@nestjs/common";
 import { ApiResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
@@ -11,6 +11,8 @@ import { CreateCategoryDto } from "../dtos/create-category.dto";
 import { UpdateCategoryDto } from "../dtos/update-category.dto";
 import { CategoryResponseDto } from "../dtos/response-category.dto";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
+import { AuthGuard } from "src/app/auth/infrastructure/guards/auth.guard";
+import { Roles } from "src/app/auth/infrastructure/decorators/roles.decorator";
 
 
 @Controller('categories')
@@ -43,6 +45,8 @@ export class CategoryController {
     @ApiResponse({status:201, type: CategoryResponseDto})
     @ApiResponse({status:400, type: BussinessError})
     @ApiResponse({status:500, description:"Internal Server Error."})
+    @UseGuards(AuthGuard)
+    @Roles('ADMIN')
     async createCategory(@Body() createCategoryDto: CreateCategoryDto){
         return this.commandBus.execute(new CreateCategoryCommand(createCategoryDto.name,createCategoryDto.description))
     }
@@ -52,6 +56,8 @@ export class CategoryController {
     @ApiResponse({status:201, type:CategoryResponseDto})
     @ApiResponse({status: 400, type: BussinessError})
     @ApiResponse({status:500, description:"Internal Server Error."})
+    @UseGuards(AuthGuard)
+    @Roles('ADMIN')
     async parcialUpdate(@Param('id') id:string, @Body() updateCategoryDto:UpdateCategoryDto){
 
         if(!updateCategoryDto.name) throw new BadRequestException("A category name is needed");
@@ -65,6 +71,8 @@ export class CategoryController {
     @ApiResponse({status:201, type:CategoryResponseDto})
     @ApiResponse({status: 400, type: BussinessError})
     @ApiResponse({status:500, description:"Internal Server Error."})
+    @UseGuards(AuthGuard)
+    @Roles('ADMIN')
     async updateCategory(@Param('id') id:string, @Body() updateCategoryDto:UpdateCategoryDto){
 
         if(!updateCategoryDto.name || !updateCategoryDto.description) throw new BadRequestException("A category name and description is needed.")
@@ -77,6 +85,8 @@ export class CategoryController {
     @ApiResponse({status:201, type:CategoryResponseDto})
     @ApiResponse({status: 400, type: BussinessError})
     @ApiResponse({status:500, description:"Internal Server Error."})
+    @UseGuards(AuthGuard)
+    @Roles('ADMIN')
     async deletCategory(@Param('id') id:string){
         return this.commandBus.execute(new DeleteCategoryCommand(id));
     }

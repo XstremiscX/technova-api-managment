@@ -11,11 +11,13 @@ import { UpdateCategoryHandler } from "../../application/handlers/update-categor
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CategoryEntity } from "../../domain/entities/category.entity";
 import { CqrsModule } from "@nestjs/cqrs";
+import { AuthModule } from "src/app/auth/infrastructure/modules/auth.module";
 
 @Module({
     imports:[
         TypeOrmModule.forFeature([CategoryEntity]),
-        CqrsModule
+        CqrsModule,
+        AuthModule
     ],
     controllers:[CategoryController],
     providers:[

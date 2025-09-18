@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Param, Get, Patch, Delete, Put } from "@nestjs/common";
+import { Body, Controller, Post, Param, Get, Patch, Delete, Put, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateUserDto } from "../dtos/create-user.dto";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
@@ -9,6 +9,7 @@ import { DeleteUserCommand } from "../../application/commands/delete-user.comman
 import { UpdateUserCommand } from "../../application/commands/update-user.command";
 import { UpdateUserPasswordCommand } from "../../application/commands/update-password.command";
 import { UpdatePasswordDto } from "../dtos/update-password.dto";
+import { AuthGuard } from "src/app/auth/infrastructure/guards/auth.guard";
 
 @Controller('users')
 @ApiTags('users')
@@ -32,6 +33,7 @@ export class UserController{
     @ApiResponse({status:400, description:"Bad request"})
     @ApiResponse({status:404, description:"User not found"})
     @Get(':id')
+    @UseGuards(AuthGuard)
     async getUserById(@Param('id') id:string){
         return this.queryBus.execute(new GetByIdUserQuery(id));
     }
@@ -41,6 +43,7 @@ export class UserController{
     @ApiResponse({status:400, description:"Bad request"})
     @ApiResponse({status:404, description:"User not found"})
     @Delete(':id')
+    @UseGuards(AuthGuard)
     async deleteUser(@Param('id') id:string){
         return this.commandBus.execute(new DeleteUserCommand(id));
     }
@@ -50,6 +53,7 @@ export class UserController{
     @ApiResponse({status:400, description:"Bad request"})
     @ApiResponse({status:404, description:"User not found"})
     @Put(':id')
+    @UseGuards(AuthGuard)
     async updateUser(@Param('id') id:string, @Body() user:Partial<CreateUserDto>){
         return this.commandBus.execute(new UpdateUserCommand(id,user.name,user.email,user.phone,user.address));
     }
@@ -59,10 +63,9 @@ export class UserController{
     @ApiResponse({status:400, description:"Bad request"})
     @ApiResponse({status:404, description:"User not found"})
     @Patch(':id')
+    @UseGuards(AuthGuard)
     async updateUserPassword(@Param('id') id:string, @Body() updateDto:UpdatePasswordDto ){
         return this.commandBus.execute(new UpdateUserPasswordCommand(id,updateDto.newPassword,updateDto.confirmPassword));
     }
-
-    
 
 }
