@@ -8,6 +8,7 @@ import { AuthModule } from './app/auth/infrastructure/modules/auth.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MailerModule } from '@nestjs-modules/mailer';
 import * as dotenv from 'dotenv';
+import { SellerProductsModule } from './app/seller-products/infrastructure/modules/seller-products.module';
 
 dotenv.config()
 
@@ -18,6 +19,7 @@ dotenv.config()
     DatabaseModule,
     CategoryModule,
     UsersModule,
+    SellerProductsModule,
     AuthModule,
     EventEmitterModule.forRoot(),
     MailerModule.forRoot({

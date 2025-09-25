@@ -23,7 +23,7 @@ export class AuthController{
     }
 
     @ApiOperation({summary:"Endpoint to verify an user email."})
-    @ApiResponse({status:200})
+    @ApiResponse({status:200, example:{verificationSucceded:true, message:"Email verification completed successfully"}})
     @ApiResponse({status:404, example:"User Not found."})
     @Get(':id')
     async verifyUserEmail(@Param('id') id:string){

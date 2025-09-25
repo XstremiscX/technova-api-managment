@@ -37,7 +37,7 @@ export class UserRepository implements IUserRepository{
 
         if(!email) throw new BadRequestException("Email is required.");
 
-        const userEntity = await this.repo.findOne({where:{verified:true,status:true},select:['id','email','type','password']});
+        const userEntity = await this.repo.findOne({where:{verified:true,status:true,email:email},select:['id','email','type','password']});
 
         if(!userEntity) throw new NotFoundException(`User with email ${email} doesn't exists`);
 

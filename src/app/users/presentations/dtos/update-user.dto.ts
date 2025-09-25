@@ -3,44 +3,36 @@ import { ApiProperty } from '@nestjs/swagger'; // The ApiProperty decorator allo
 import { UserTypeEnum } from 'src/app/commons/utils/enums/users-type.enum';
 import { Transform } from 'class-transformer';
 
-export class CreateUserDto{
+export class UpdateUserDto{
     
     @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
     @IsNotEmpty()
     @ApiProperty({description:"user name", example:"Jhon Doe"})
-    name:string;
+    @IsOptional()
+    name?:string;
 
     @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
     @IsNotEmpty()
     @IsEmail()
     @ApiProperty({description:"user email", example:"exampleemail@gmail.com"})
-    email:string;
-    
-    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
-    @IsString()
-    @IsNotEmpty()
-    @MinLength(12)
-    @IsStrongPassword()
-    @ApiProperty({description:"current password", example:"currentPassword123"})
-    password:string;
-
-    @IsInt()
-    @IsNotEmpty()
-    @ApiProperty({description:"user type id", example:UserTypeEnum.ADMIN})
-    type:UserTypeEnum;
+    @IsOptional()
+    email?:string;
 
     @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
     @IsNotEmpty()
     @IsPhoneNumber()
     @ApiProperty({description:"user cellphone number", example:"0000000000"})
-    phone:string;
+    @IsOptional()
+    phone?:string;
 
     @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
     @IsNotEmpty()
     @ApiProperty({description:"user address", example: "Colombia,Antioquia,Medellín,calle 00, 00-00,postalcode"})
-    address: string;
+    @IsOptional()
+    address?: string;
+
 }

@@ -4,8 +4,8 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 export class VerifyEmailDto{
     
+    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
-    @Transform(({value})=>{return value.trim()})
     @IsNotEmpty()
     @ApiProperty({description:"User ID for verification", example:"12j32-sda34-2ewfr-4trw"})
     id:string

@@ -23,10 +23,9 @@ export class AuthGuard implements CanActivate {
 
     const payload = this.tokenService.verifyToken(token);
 
-    // Solo aplicar esta lógica si la ruta incluye /users/:id
     if (path.includes('/users/') && paramId) {
       if (payload.userId !== paramId) {
-        throw new ForbiddenException("You can only modify your own data.");
+        throw new ForbiddenException("You can only access or modify your own data.");
       }
     }
     

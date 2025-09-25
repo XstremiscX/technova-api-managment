@@ -4,15 +4,15 @@ import { ApiProperty } from "@nestjs/swagger"; // The ApiProperty decorator allo
 
 export class UpdatePasswordDto{
     
+    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
-    @Transform(({value}) =>  value.trim())
     @IsNotEmpty()
     @IsStrongPassword()
     @ApiProperty({description:"new user password", example:"newPassword123"})
     newPassword:string;
 
+    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
-    @Transform(({value}) =>  value.trim())
     @IsNotEmpty()
     @IsStrongPassword()
     @ApiProperty({description:"new user password", example:"newPassword123"})
