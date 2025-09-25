@@ -4,15 +4,15 @@ import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class LoginDto{
     
+    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
-    @Transform(({value}) => {return value.trim()})
     @IsNotEmpty()
     @IsEmail()
     @ApiProperty({description:"User email", example:"example@email.com"})
     userEmail: string;
 
+    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
     @IsString()
-    @Transform(({value})=>{return value.trim()})
     @IsNotEmpty()
     @ApiProperty({description:"User password", example:"password123"})
     userPassword: string;

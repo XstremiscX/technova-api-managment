@@ -10,6 +10,7 @@ import { UpdateUserCommand } from "../../application/commands/update-user.comman
 import { UpdateUserPasswordCommand } from "../../application/commands/update-password.command";
 import { UpdatePasswordDto } from "../dtos/update-password.dto";
 import { AuthGuard } from "src/app/auth/infrastructure/guards/auth.guard";
+import { UpdateUserDto } from "../dtos/update-user.dto";
 
 @Controller('users')
 @ApiTags('users')
@@ -54,7 +55,7 @@ export class UserController{
     @ApiResponse({status:404, description:"User not found"})
     @Put(':id')
     @UseGuards(AuthGuard)
-    async updateUser(@Param('id') id:string, @Body() user:Partial<CreateUserDto>){
+    async updateUser(@Param('id') id:string, @Body() user:UpdateUserDto){
         return this.commandBus.execute(new UpdateUserCommand(id,user.name,user.email,user.phone,user.address));
     }
 

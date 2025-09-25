@@ -56,11 +56,12 @@ export class Category {
         if(this.name === newName) throw new BussinessError("The new name and the current name must be differents.");
 
         this.setName(newName);
-        
+
     }
 
     // Public method to change the description, reusing internal validation
     changeDescription(newDescription: string): void {
         this.setDescription(newDescription);
     }
+    
 }
