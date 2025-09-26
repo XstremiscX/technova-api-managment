@@ -1,9 +1,9 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from 'typeorm';
 import { UserEntity } from 'src/app/users/domain/entities/user.entity';
-import { ISaleEntity } from '../interfaces/isale-entity.interface';
+import { Type } from 'class-transformer';
 
 @Entity('sales')
-export class SaleEntity implements ISaleEntity{
+export class SaleEntity{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -17,10 +17,10 @@ export class SaleEntity implements ISaleEntity{
     quantity: number;
 
     @ManyToOne(() => UserEntity, user => user.purchases)
-    buyer: string;
+    buyer: UserEntity;
 
     @ManyToOne(() => UserEntity, user => user.sales)
-    seller: string;
+    seller: UserEntity;
 
     @Column({ type: 'text' })
     details: string;

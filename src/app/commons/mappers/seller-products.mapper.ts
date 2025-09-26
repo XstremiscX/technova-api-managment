@@ -1,15 +1,15 @@
 import { BrandEntity } from "src/app/brands/domain/entities/brand.entity";
-import { SellerProduct } from "../../domain/entities/seller-product";
-import { ProductEntity } from "../../domain/entities/product.entity";
+import { Product } from "../domain/entitites/product";
+import { ProductEntity } from "../domain/entitites/product.entity";
 import { CategoryEntity } from "src/app/categories/domain/entities/category.entity";
 import { UserEntity } from "src/app/users/domain/entities/user.entity";
 import { ProductItemResponseDto } from "../dtos/response-product-itme.dto";
-import e from "express";
 
-export class SellerProductMapper{
-    fromEntityToDomain(entity: ProductEntity):SellerProduct{
+export class ProductMapper{
 
-        return new SellerProduct(   
+    fromEntityToDomain(entity: ProductEntity):Product{
+
+        return new Product(   
             entity.name,
             entity.image,
             entity.description,
@@ -26,7 +26,7 @@ export class SellerProductMapper{
 
     }
 
-    fromDomainToEntity(domain:SellerProduct):ProductEntity{
+    fromDomainToEntity(domain:Product):ProductEntity{
         const entity = new ProductEntity();
 
         entity.id = domain.id;
@@ -54,13 +54,13 @@ export class SellerProductMapper{
         return entity;
     }
 
-    fromDomainToResponseDto(product:SellerProduct):ProductItemResponseDto{
+    fromDomainToResponseDto(product:Product):ProductItemResponseDto{
 
         return{
             id:product.id,
             name:product.getName(),
             image:product.getImage(),
-            price:product.getPrice(),
+            price:Number(product.getPrice()),
             stock:product.getStock(),
             brand:product.getBrand(),
             category:product.getCategory()

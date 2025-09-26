@@ -1,17 +1,17 @@
 import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import { Inject } from "@nestjs/common";
 import type { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
-import { SellerProductMapper } from "../../presentations/mappers/seller-products.mapper";
+import { ProductMapper } from "../../../commons/mappers/seller-products.mapper";
 import { UpdateProductCommand } from "../commands/update-product.command";
-import { ProductItemResponseDto } from "../../presentations/dtos/response-product-itme.dto";
-import { SellerProduct } from "../../domain/entities/seller-product";
+import { ProductItemResponseDto } from "../../../commons/dtos/response-product-itme.dto";
+import { Product } from "../../../commons/domain/entitites/product";
 
 @CommandHandler(UpdateProductCommand)
 export class UpdateProductHandler implements ICommandHandler<UpdateProductCommand>{
 
     constructor(
-        @Inject("ISellerProductRepository") private readonly productRepository: ISellerProductRepository<SellerProduct>,
-        private readonly productMapper: SellerProductMapper
+        @Inject("ISellerProductRepository") private readonly productRepository: ISellerProductRepository<Product>,
+        private readonly productMapper: ProductMapper
     ){}
 
     async execute(command: UpdateProductCommand): Promise<ProductItemResponseDto> {

@@ -1,16 +1,16 @@
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { FindByIdProductQuery } from "../queries/find-by-id-product.query";
 import { Inject } from "@nestjs/common";
-import { ProductDetailResponseDto } from "../../presentations/dtos/response-product-detail.dto";
+import { ProductDetailResponseDto } from "../../../commons/dtos/response-product-detail.dto";
 import type { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
-import { SellerProduct } from "../../domain/entities/seller-product";
+import { Product } from "../../../commons/domain/entitites/product";
 
 
 @QueryHandler(FindByIdProductQuery)
 export class FindByIdProductHandler implements IQueryHandler<FindByIdProductQuery>{
 
     constructor(
-        @Inject("ISellerProductRepository") private readonly productRepository: ISellerProductRepository<SellerProduct>
+        @Inject("ISellerProductRepository") private readonly productRepository: ISellerProductRepository<Product>
     ){}
 
     async execute(query: FindByIdProductQuery): Promise<ProductDetailResponseDto> {

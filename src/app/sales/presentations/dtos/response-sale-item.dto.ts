@@ -1,7 +1,7 @@
 import { Expose, Exclude } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class SaleItemResponse{
+export class SaleItemResponseDto{
 
     @Expose()
     @ApiProperty({description:"Sale id", example:"ft34r-123isd-1d32e-123isd"})

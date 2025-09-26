@@ -2,7 +2,7 @@ import { BadRequestException, InternalServerErrorException } from "@nestjs/commo
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 import {v4 as uuid} from 'uuid';
 
-export class SellerProduct{
+export class Product{
     
     constructor(
         private name:string,
@@ -26,10 +26,6 @@ export class SellerProduct{
     private setValidStatus(status:number):void{
         if(!([0,1,2].includes(status))) throw new BadRequestException("the product status is invalid.");
         this.status = status;
-    }
-
-    private setCreatedAt(createdAt:Date):void{
-
     }
 
     getName():string{

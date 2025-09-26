@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { SellerProductMapper } from "../../presentations/mappers/seller-products.mapper";
+import { ProductMapper } from "../../../commons/mappers/seller-products.mapper";
 import { CreateProductHandler } from "../../application/handlers/create-product.handler";
 import { UpdateProductHandler } from "../../application/handlers/update-product.handler";
 import { DeleteProductHandler } from "../../application/handlers/delete-product.handler";
@@ -9,13 +9,13 @@ import { SellerProductRepository } from "../repositories/seller-product.reposito
 import { SellerProductsController } from "../../presentations/controllers/seller-products.controller";
 import { CqrsModule } from "@nestjs/cqrs";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { ProductEntity } from "../../domain/entities/product.entity";
+import { ProductEntity } from "../../../commons/domain/entitites/product.entity";
 import { AuthModule } from "src/app/auth/infrastructure/modules/auth.module";
 
 @Module({
     providers:[
         //Mapper
-        SellerProductMapper,
+        ProductMapper,
 
         //Handlers
         CreateProductHandler,
