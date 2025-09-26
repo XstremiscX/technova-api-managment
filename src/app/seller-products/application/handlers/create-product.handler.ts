@@ -2,22 +2,22 @@ import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import { CreateProductCommand } from "../commands/create-product.command";
 import { Inject } from "@nestjs/common";
 import type { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
-import { SellerProductMapper } from "../../presentations/mappers/seller-products.mapper";
-import { ProductItemResponseDto } from "../../presentations/dtos/response-product-itme.dto";
-import { SellerProduct } from "../../domain/entities/seller-product";
+import { ProductMapper } from "../../../commons/mappers/seller-products.mapper";
+import { ProductItemResponseDto } from "../../../commons/dtos/response-product-itme.dto";
+import { Product } from "../../../commons/domain/entitites/product";
 import {v4 as uuid} from 'uuid';
 
 @CommandHandler(CreateProductCommand)
 export class CreateProductHandler implements ICommandHandler<CreateProductCommand>{
 
     constructor(
-        @Inject("ISellerProductRepository") private readonly productRepo: ISellerProductRepository<SellerProduct>,
-        private readonly productMapper: SellerProductMapper
+        @Inject("ISellerProductRepository") private readonly productRepo: ISellerProductRepository<Product>,
+        private readonly productMapper: ProductMapper
     ){}
 
     async execute(command: CreateProductCommand): Promise<ProductItemResponseDto> {
 
-        const newProduct = new SellerProduct(
+        const newProduct = new Product(
             command.name,
             command.image,
             command.description,

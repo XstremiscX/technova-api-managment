@@ -1,7 +1,4 @@
-import { Expose, Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
-import { BrandResponseDto } from "src/app/brands/presentations/dtos/response-brand.dto";
-import { CategoryResponseDto } from "src/app/categories/presentations/dtos/response-category.dto";
 
 export class ProductItemResponseDto{
 

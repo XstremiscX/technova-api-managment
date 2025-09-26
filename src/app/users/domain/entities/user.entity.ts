@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
-import { ProductEntity } from 'src/app/seller-products/domain/entities/product.entity';
+import { ProductEntity } from 'src/app/commons/domain/entitites/product.entity';
 import { SaleEntity } from 'src/app/sales/domain/entities/sale.entity';
 import { UserTypeEnum } from 'src/app/commons/utils/enums/users-type.enum';
 
