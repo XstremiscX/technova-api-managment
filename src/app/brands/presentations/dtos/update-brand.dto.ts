@@ -1,5 +1,4 @@
-import { CreateBrandDto } from "./create-brand.dto";
+import { BaseBrandDto } from "./base-brand.dto";
 
-export class UpdateBrandDto extends (CreateBrandDto){
-    
+export class UpdateBrandDto extends BaseBrandDto{
 }
