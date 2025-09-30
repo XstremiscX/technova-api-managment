@@ -5,7 +5,7 @@ import { Roles } from "src/app/auth/infrastructure/decorators/roles.decorator";
 import { AuthGuard } from "src/app/auth/infrastructure/guards/auth.guard";
 import { FindAllProductsQuery } from "../../application/queries/find-all-products.query";
 import { ProductItemResponseDto } from "../../../commons/dtos/response-product-itme.dto";
-import type { AuthenticatedRequest } from "../../domain/interfaces/Iauthenticated-request.interface";
+import type { AuthenticatedRequest } from "../../../commons/interfaces/Iauthenticated-request.interface";
 import { FindByIdProductQuery } from "../../application/queries/find-by-id-product.query";
 import { ProductDetailResponseDto } from "../../../commons/dtos/response-product-detail.dto";
 import { CreateProductDto } from "../dtos/create-product.dto";

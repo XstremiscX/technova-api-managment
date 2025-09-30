@@ -10,6 +10,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import * as dotenv from 'dotenv';
 import { SellerProductsModule } from './app/seller-products/infrastructure/modules/seller-products.module';
 import { PublicProductModule } from './app/public-products/infrastructure/modules/public-products.module';
+import { SaleModule } from './app/sales/infrastructure/modules/sale.module';
 
 dotenv.config()
 
@@ -23,6 +24,7 @@ dotenv.config()
     SellerProductsModule,
     PublicProductModule,
     AuthModule,
+    SaleModule,
     EventEmitterModule.forRoot(),
     MailerModule.forRoot({
       transport:{
