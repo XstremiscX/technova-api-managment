@@ -31,7 +31,7 @@ export class Category {
     // Applies validation and sets the internal name
     private setName(name: string): void {
         this.validateName(name);
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     // Applies validation and sets the internal description
@@ -53,7 +53,7 @@ export class Category {
     // Public method to rename the category, reusing internal validation
     rename(newName: string): void {
 
-        if(this.name === newName) throw new BussinessError("The new name and the current name must be differents.");
+        if(this.name === newName.toUpperCase()) throw new BussinessError("The new name and the current name must be differents.");
 
         this.setName(newName);
 

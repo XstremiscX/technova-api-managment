@@ -18,32 +18,35 @@ import { UserCreatedEventListener } from "../listeners/user-created-event.listen
 
 @Module({
     imports:[
+        // Registers UserEntity for TypeORM
         TypeOrmModule.forFeature([UserEntity]),
+        // Enables CQRS command and query buses
         CqrsModule,
+        // Allows circular dependency resolution with AuthModule
         forwardRef(()=>AuthModule)
     ],
     controllers:[UserController],
     providers:[
-        // Handlers
+        // CQRS Handlers
         GetByIdUserQueryHandler,
         UpdateUserCommandHandler,
         DeleteUserCommandHandler,
         CreateUserCommandHandler,
         UpdateUserPasswordCommandHandler,
 
-        //Repository
+        // Repository implementation
         {
             provide: "IUserRepository",
             useClass: UserRepository
         },
 
-        // Mapper
+        // Mapper for transforming entities to views
         UserMapper,
 
-        // ServicesP
+        // Password hashing and validation service
         PasswordService,
 
-        //Events services
+        // Event emission and email notification services
         UserCreatedEventService,
         SendVerificationEmailService,
         UserCreatedEventListener

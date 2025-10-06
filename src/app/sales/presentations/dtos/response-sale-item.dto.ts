@@ -9,7 +9,7 @@ export class SaleItemResponseDto{
     @ApiProperty({description:"Product purchase amount", example:25000})
     amount:number;
 
-    @ApiProperty({description:"Sale date", example:"12/06/2002 15:34:22.000 Gmt"})
+    @ApiProperty({description:"Sale date", format:"date-time"})
     date:Date;
 
     @ApiProperty({description:"Purchase products quantity", example:12})

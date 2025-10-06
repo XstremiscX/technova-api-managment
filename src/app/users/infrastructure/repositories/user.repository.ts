@@ -9,10 +9,13 @@ import { UserPublicView } from "../../presentations/views/user-public.view";
 import { LoginUserView } from "src/app/auth/presentation/views/login-user.view";
 
 @Injectable()
+// Repository implementation for User, handling persistence and view mapping
 export class UserRepository implements IUserRepository{
 
     constructor(
+        // Injects the TypeORM repository for UserEntity
         @InjectRepository(UserEntity) private repo: Repository<UserEntity>,
+        // Mapper used to transform entities into views
         private readonly mapper : UserMapper
     ) {}
 
@@ -33,6 +36,10 @@ export class UserRepository implements IUserRepository{
 
     }
 
+    /**
+    * Retrieves a user by email for login purposes.
+    * Only returns verified and active users.
+    */
     async findByEmail(email:string):Promise<LoginUserView>{
 
         if(!email) throw new BadRequestException("Email is required.");
@@ -41,7 +48,7 @@ export class UserRepository implements IUserRepository{
 
         if(!userEntity) throw new NotFoundException(`User with email ${email} doesn't exists`);
 
-        return new LoginUserView(userEntity.id,userEntity.email,userEntity.password,userEntity.type);
+        return this.mapper.toLoginUserViewFromEntity(userEntity);
 
 
     }
@@ -146,6 +153,10 @@ export class UserRepository implements IUserRepository{
 
     }
 
+    /**
+    * Verifies a user's email address.
+    * Returns a message indicating success or if already verified.
+    */
     async verifyUserEmail(id:string):Promise<any>{
 
         const userExists = await this.repo.findOne({where:{id:id,status:true},select:['verified']})

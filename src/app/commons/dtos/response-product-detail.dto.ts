@@ -1,5 +1,6 @@
 import { ApiProperty} from "@nestjs/swagger";
 
+// DTO representing detailed product information for seller view
 export class ProductDetailResponseDto{
 
     @ApiProperty({description:"Product description", example:"Product description"})

@@ -7,6 +7,7 @@ import { SaleItemResponseDto } from "../../presentations/dtos/response-sale-item
 import { Sale } from "../../domain/entities/sale";
 import { v4 as uuid } from 'uuid';
 
+// Handler for SaveSaleCommand: registers a new sale and returns its summary
 @CommandHandler(SaveSaleCommand)
 export class SaveSaleHandler implements ICommandHandler<SaveSaleCommand>{
 

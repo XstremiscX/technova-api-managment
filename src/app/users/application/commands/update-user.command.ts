@@ -1,4 +1,4 @@
-// Command used to update a user's password.
+// Command used to update a user's public data
 export class UpdateUserCommand{
     constructor(
         public readonly id:string,
@@ -7,4 +7,4 @@ export class UpdateUserCommand{
         public readonly phone?:string,
         public readonly address?:string
     ){}
-}
+}   

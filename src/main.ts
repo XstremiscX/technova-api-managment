@@ -9,7 +9,7 @@ import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { mkdirSync } from 'fs';
 import { AllExceptionsFilter } from './app/commons/error_management/all-exceptions.filters';
-import { UnprocessableEntityException } from '@nestjs/common';
+import { SanitizePipe } from './app/commons/pipes/xss-sanitization.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +19,7 @@ async function bootstrap() {
     transform: true,
     forbidNonWhitelisted: true,
     enableDebugMessages: true,
-  }));
+  }), new SanitizePipe());
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 

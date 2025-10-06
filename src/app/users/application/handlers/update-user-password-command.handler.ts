@@ -26,7 +26,7 @@ export class UpdateUserPasswordCommandHandler implements ICommandHandler<UpdateU
 
         await this.userRepository.updatePassword(id, hashedPassword);
 
-        return { message: "User password updated successfully" };
+        return {message: "User password updated successfully"};
 
     }
 

@@ -3,6 +3,7 @@ import { BrandEntity } from 'src/app/brands/domain/entities/brand.entity';
 import { CategoryEntity } from 'src/app/categories/domain/entities/category.entity';
 import { UserEntity } from 'src/app/users/domain/entities/user.entity';
 
+// Persistence entity representing the 'products' table in the database
 @Entity('products')
 export class ProductEntity{
     @PrimaryGeneratedColumn('uuid')

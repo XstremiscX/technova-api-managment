@@ -4,7 +4,7 @@ import { FiltersDto } from "../../presentation/dto/filters.dto";
 import { Like, MoreThanOrEqual, LessThanOrEqual, Between, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductEntity } from "src/app/commons/domain/entitites/product.entity";
-import { ProductMapper } from "@mappers/seller-products.mapper";
+import { ProductMapper } from "@mappers/products.mapper";
 import { NotFoundException } from "@nestjs/common";
 
 export class PublicProductsRepository implements IPublicProductsRepository<Product>{

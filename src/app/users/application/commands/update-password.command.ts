@@ -1,5 +1,4 @@
-// Command used to update a user's password.
-
+// Command used to update a user's password
 export class UpdateUserPasswordCommand{
     constructor(
         public readonly id:string,

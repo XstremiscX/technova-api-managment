@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { ProductMapper } from "../../../commons/mappers/seller-products.mapper";
+import { ProductMapper } from "../../../commons/mappers/products.mapper";
 import { CreateProductHandler } from "../../application/handlers/create-product.handler";
 import { UpdateProductHandler } from "../../application/handlers/update-product.handler";
 import { DeleteProductHandler } from "../../application/handlers/delete-product.handler";

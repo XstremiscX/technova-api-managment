@@ -3,7 +3,7 @@ import { Injectable, InternalServerErrorException, NotFoundException } from "@ne
 import { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
 import { ProductEntity } from "../../../commons/domain/entitites/product.entity";
 import { Product } from "../../../commons/domain/entitites/product";
-import { ProductMapper } from "../../../commons/mappers/seller-products.mapper";
+import { ProductMapper } from "../../../commons/mappers/products.mapper";
 import { UserEntity } from "src/app/users/domain/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
@@ -34,6 +34,12 @@ export class SellerProductRepository implements ISellerProductRepository<Product
 
     }
 
+    private async validateUniqueName(name: string, seller: UserEntity, excludeId?: string): Promise<void> {
+        const exists = await this.existsByName(name, seller, excludeId);
+        if (exists) throw new BussinessError(`The name ${name} is duplicated.`);
+    }
+
+
     async findAll(seller_id:string): Promise<Product[]> {
 
         const seller = new UserEntity();
@@ -57,10 +63,8 @@ export class SellerProductRepository implements ISellerProductRepository<Product
     async save(product: Product): Promise<Product> {
 
         const productEntity = this.mapper.fromDomainToEntity(product);
-        
-        const exists = await this.existsByName(productEntity.name, productEntity.seller_id);
 
-        if(exists) throw new BussinessError(`The name ${productEntity.name} is duplicated.`)
+        await this.validateUniqueName(productEntity.name,productEntity.seller_id);
 
         const savedProduct = await this.productRepository.save(productEntity);
 
@@ -78,13 +82,11 @@ export class SellerProductRepository implements ISellerProductRepository<Product
         
         const productEntity = this.mapper.fromDomainToEntity(product);
 
-        const existsCoincidence = await this.existsByName(productEntity.name,productEntity.seller_id,productEntity.id);
+        await this.validateUniqueName(productEntity.name,productEntity.seller_id,productEntity.id);
 
-        if(existsCoincidence) throw new BussinessError(`The name ${productEntity.name} is duplicated.`);
+        const updatedProduct = await this.productRepository.save(productEntity);
 
-        const updatedProduct = await this.productRepository.save(productEntity)
-
-        if(!updatedProduct) throw new InternalServerErrorException("Something went wrong during product update.")
+        if(!updatedProduct) throw new InternalServerErrorException("Something went wrong during product update.");
 
         return this.mapper.fromEntityToDomain(updatedProduct);
 

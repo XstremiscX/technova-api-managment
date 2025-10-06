@@ -3,6 +3,7 @@ import { ProductEntity } from 'src/app/commons/domain/entitites/product.entity';
 import { SaleEntity } from 'src/app/sales/domain/entities/sale.entity';
 import { UserTypeEnum } from 'src/app/commons/utils/enums/users-type.enum';
 
+// Persistence entity representing the 'users' table in the database
 @Entity('users')
 export class UserEntity{
     @PrimaryGeneratedColumn('uuid')
@@ -29,10 +30,10 @@ export class UserEntity{
     @Column({ type: 'boolean', default: true }) // User state false:deleted, true:active
     status: boolean;
 
-    @Column({ type: 'boolean', default: false })
+    @Column({ type: 'boolean', default: false }) // Indicates if the user is verified
     verified: boolean;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }) // Registration timestamp
     registration_date: Date;
 
     // This sentence establishes the relationship between the seller and the product being sold.

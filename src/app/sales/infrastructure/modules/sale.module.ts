@@ -10,9 +10,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { SaleEntity } from "../../domain/entities/sale.entity";
 import { AuthModule } from "src/app/auth/infrastructure/modules/auth.module";
 
+// Module for sales feature: integrates CQRS handlers, repository, and controller
 @Module({
     providers:[
-        //Mapper
+        //Mapper 
         SaleMapper,
 
         //Handlers

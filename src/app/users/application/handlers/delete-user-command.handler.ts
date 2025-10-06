@@ -2,7 +2,7 @@ import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import type { IUserRepository } from "../../domain/interfaces/iuser-repository.interface";
 import { Inject } from "@nestjs/common";
 import { DeleteUserCommand } from "../commands/delete-user.command";
-import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
+import { DeleteResponseDto } from "src/app/commons/dtos/response-deleted-domain.dto";
 import { DeletedResult } from "src/app/commons/utils/enums/deleted-resutls.enum";
 
 /**

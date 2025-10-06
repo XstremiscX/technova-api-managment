@@ -5,7 +5,7 @@ import { CategoryEntity } from "src/app/categories/domain/entities/category.enti
 import { UserEntity } from "src/app/users/domain/entities/user.entity";
 import { ProductItemResponseDto } from "../dtos/response-product-itme.dto";
 
-export class ProductMapper{
+export class ProductMapper {
 
     fromEntityToDomain(entity: ProductEntity):Product{
 

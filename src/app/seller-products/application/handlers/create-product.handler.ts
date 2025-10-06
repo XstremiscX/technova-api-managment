@@ -2,11 +2,12 @@ import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import { CreateProductCommand } from "../commands/create-product.command";
 import { Inject } from "@nestjs/common";
 import type { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
-import { ProductMapper } from "../../../commons/mappers/seller-products.mapper";
+import { ProductMapper } from "../../../commons/mappers/products.mapper";
 import { ProductItemResponseDto } from "../../../commons/dtos/response-product-itme.dto";
 import { Product } from "../../../commons/domain/entitites/product";
 import {v4 as uuid} from 'uuid';
 
+// Handler for CreateProductCommand: creates a new product and returns its summary
 @CommandHandler(CreateProductCommand)
 export class CreateProductHandler implements ICommandHandler<CreateProductCommand>{
 

@@ -15,26 +15,28 @@ import { CreateBrandHandler } from '../../application/handlers/create-brand.hand
 
 import { BrandMapper } from '../../presentations/mappers/brand.mapper';
 import { AuthModule } from 'src/app/auth/infrastructure/modules/auth.module';
-import { TokenService } from 'src/app/auth/infrastructure/services/token.service';
 
 @Module({
   imports: [
+    // Import the brand entity for operations with TypeORM
     TypeOrmModule.forFeature([BrandEntity]),
+    // Enable the CQRS pattern
     CqrsModule,
+    // Authentication module to protect endpoints
     AuthModule
   ],
   controllers: [BrandController],
   providers: [
-    // Repository
+    // Injecting the repository using its interface
     {
       provide: "IBrandRepository",
       useClass: BrandRepository,
     },
 
-    //mapper
+    // Mapper for transforming between domain entities, persistence, and DTOs
     BrandMapper,
 
-    // Handlers
+    // CQRS Handlers
     CreateBrandHandler,
     UpdateBrandHandler,
     DeleteBrandHandler,

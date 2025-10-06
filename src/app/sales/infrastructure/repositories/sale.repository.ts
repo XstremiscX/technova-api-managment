@@ -5,7 +5,6 @@ import { Repository } from "typeorm";
 import { Sale } from "../../domain/entities/sale";
 import { UserEntity } from "src/app/users/domain/entities/user.entity";
 import { SaleMapper } from "../../presentations/mappers/sale.mapper";
-import { SaleDetailsResponseDto } from "../../presentations/dtos/response-sale-details.dto";
 import { NotFoundException } from "@nestjs/common";
 
 export class SaleRepository implements ISaleRepository{
@@ -50,7 +49,7 @@ export class SaleRepository implements ISaleRepository{
 
         const saleSaved = await this.saleRepository.save(saleEntity);
 
-        if(!saleSaved) throw new NotFoundException("Sale not found after creation");
+        if(!saleSaved) throw new NotFoundException("Sale could not be saved");
 
         return this.saleMapper.toDomainFromEntity(saleSaved);
 

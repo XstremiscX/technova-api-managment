@@ -11,6 +11,7 @@ import * as dotenv from 'dotenv';
 import { SellerProductsModule } from './app/seller-products/infrastructure/modules/seller-products.module';
 import { PublicProductModule } from './app/public-products/infrastructure/modules/public-products.module';
 import { SaleModule } from './app/sales/infrastructure/modules/sale.module';
+import { SanitizePipe} from './app/commons/pipes/xss-sanitization.pipe';
 
 dotenv.config()
 
@@ -42,7 +43,8 @@ dotenv.config()
     })
   ],
   controllers: [],
-  providers: [],
+  providers: [SanitizePipe],
+  exports:[SanitizePipe]
 })  
 export class AppModule {}
  

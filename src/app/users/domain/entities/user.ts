@@ -1,10 +1,8 @@
-import { BadRequestException } from "@nestjs/common";
 import { BussinessError } from "src/app/commons/error_management/bussines errors/bussines-error";
 import { UserTypeEnum } from "src/app/commons/utils/enums/users-type.enum";
 import { UserBuilder } from "../../infrastructure/builders/user.builder";
-import { PasswordService } from "../../infrastructure/services/password.service";
-import { Inject } from "@nestjs/common";
 
+// Domain entity representing a User with encapsulated business rules
 export class User{
     id:string;
     name:string;
@@ -32,7 +30,7 @@ export class User{
         this.registration_date = userBuilder.registration_date;
     }
 
-    private validateDifference(currentData:string, newData: string, fieldName:string):string{
+    validateDifference(currentData:string, newData: string, fieldName:string):string{
         // Throws a businesserror if the current currentData is the same as the newData.
         if(newData === currentData) throw new BussinessError(`The current ${fieldName} and the new ${fieldName} must be different.`);
 

@@ -53,4 +53,8 @@ echo "@nestjs-modules/mailer nodemailer"
 npm install @nestjs-modules/mailer nodemailer
 npm install @types/nodemailer
 
+# Install sanitize-html
+echo "Instalando sanitize-html"
+npm install sanitize-html
+
 echo "🎉 Instalación completa. Tu entorno está listo para construir la Technova API."

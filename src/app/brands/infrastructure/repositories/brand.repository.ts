@@ -14,8 +14,9 @@ export class BrandRepository implements IBrandRepository {
     constructor(@InjectRepository(BrandEntity) private repo: Repository<BrandEntity>,
     private readonly mapper: BrandMapper) {}
 
+    // Check if there is a brand with the same name to avoid duplicates.
     async existsByName(name: string, excludedId?: string): Promise<boolean> {
-        // Checks if a brand with the same name exists, optionally excluding a specific ID (used during updates)
+        
         if (excludedId) {
             const duplicated = await this.repo.findOne({ where: { name } });
             return !!(duplicated && duplicated.id !== excludedId);
@@ -24,54 +25,51 @@ export class BrandRepository implements IBrandRepository {
         }
     }
 
+    // Save a new brand by verifying that there is no other brand with the same name.
     async save(brand: Brand): Promise<Brand> {
 
-        //Prevents duplicate names before making the change.
         const exists = await this.existsByName(brand.getName());
 
         if (exists) throw new BussinessError("Can not duplicate a brand name.");
 
-        const saved = await this.repo.save({ id : brand.id, name : brand.getName()});
+        const brandEntity = this.mapper.toEntityFromDomain(brand);
+
+        const saved = await this.repo.save(brandEntity);
 
         return this.mapper.toDomainFromEntity(saved);
 
     }
 
-
+    // Searches for and returns a list of all brands found in the database.
     async findAll(): Promise<Brand[]> {
         
-        //Recovers all brands and transforms them into domain entities
         const entities = await this.repo.find();
 
         return entities.map(e => this.mapper.toDomainFromEntity(e));
 
     }
 
-
+    // Search for a brand by ID
     async findById(id: string): Promise<Brand> {
 
-        // Searches for a brand and returns it if it exists, otherwise throws an error.
-        const entity = await this.repo.findOneBy({id});
+        const brandEntity = await this.repo.findOneBy({id});
 
-        if(!entity) throw new NotFoundException(`Brand with id: ${id} not found`);
+        if(!brandEntity) throw new NotFoundException(`Brand with id: ${id} not found`);
 
-        return this.mapper.toDomainFromEntity(entity);
+        return this.mapper.toDomainFromEntity(brandEntity);
 
     }
 
-
+    // Update the name of a brand and verify that there is no other brand with the same name that is going to be changed.
     async update(brand: Brand): Promise<Brand> {
 
-        // Validate that there is no name identical to the new name.
         const exists = await this.existsByName(brand.getName(),brand.id);
 
         if(exists) throw new BussinessError("Can not duplicate a brand name.");
 
-        // Validate that a brand with that ID exists.
         const entityExists = await this.repo.findOneBy({ id: brand.id });
 
         if (!entityExists) throw new NotFoundException("The brand to be updated does not exist.");
-
 
         entityExists.name = brand.getName();
 
@@ -81,10 +79,13 @@ export class BrandRepository implements IBrandRepository {
 
     }
 
+    // Remove a brand
     async delete(id: string): Promise<void> {
-        // Check that the mark exists before removing it.
+        
         const entity = await this.repo.findOneBy({ id });
+
         if (!entity) throw new NotFoundException("Brand not found");
+
         await this.repo.delete(id);
     }
 }

@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { FindAllPublicProductsQuery } from "../queries/find-all-public-products.query";
 import type { IPublicProductsRepository } from "../../domain/interfaces/ipublic-products-repository.interface";
-import { ProductMapper } from "@mappers/seller-products.mapper";
+import { ProductMapper } from "@mappers/products.mapper";
 import { Product } from "src/app/commons/domain/entitites/product";
 import { ProductItemResponseDto } from "src/app/commons/dtos/response-product-itme.dto";
 

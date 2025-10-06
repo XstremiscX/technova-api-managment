@@ -6,6 +6,7 @@ import { BussinessError } from "src/app/commons/error_management/bussines errors
 @Injectable()
 export class PasswordService{
 
+    // Compares a new password with the current hashed password
     comparePasswords(newPassword:string, currentPassword:string):boolean{
         // Compare a plain text password with a hashed password using bcrypt.
         const isSamePassword = bcrypt.compareSync(newPassword, currentPassword);
@@ -15,12 +16,13 @@ export class PasswordService{
         return isSamePassword;
     }
 
+    // Hashes a plain text password using bcrypt
     hashPassword(password:string):string{
-        // Hash a plain text password using bcrypt.
         const salt = bcrypt.genSaltSync(10);
         return bcrypt.hashSync(password, salt);
     }
 
+    // Verifies a plain password against a hashed password
     verifyPassword(password:string,hashedPassword:string): boolean{
 
         const isValid = bcrypt.compareSync(password,hashedPassword);
