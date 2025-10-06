@@ -10,11 +10,12 @@ import { FindByIdProductQuery } from "../../application/queries/find-by-id-produ
 import { ProductDetailResponseDto } from "../../../commons/dtos/response-product-detail.dto";
 import { CreateProductDto } from "../dtos/create-product.dto";
 import { CreateProductCommand } from "../../application/commands/create-product.command";
-import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
+import { DeleteResponseDto } from "src/app/commons/dtos/response-deleted-domain.dto";
 import { DeleteProductCommand } from "../../application/commands/delete-product.command";
 import { UpdateProductCommand } from "../../application/commands/update-product.command";
 import { UpdateProductDto } from "../dtos/update-product.dto";
 
+// Controller for managing seller-owned products using CQRS and role-based access control
 @Controller('seller-products')
 @ApiTags('seller-products')
 export class SellerProductsController {
@@ -24,6 +25,7 @@ export class SellerProductsController {
         private readonly queryBus : QueryBus 
     ){}
 
+    // Endpoint that returns all products from a specific seller (Only SELLERs)
     @ApiOperation({summary:"Find all products belonging to the seller."})
     @ApiResponse({status:200, type:ProductItemResponseDto})
     @ApiResponse({status:401, description:"Token is missing"})
@@ -39,6 +41,7 @@ export class SellerProductsController {
         
     }
 
+    // Endpoint that obtains the details of a product by its ID
     @ApiOperation({summary:"Find details about the selected product"})
     @ApiResponse({status:200, type:ProductDetailResponseDto})
     @ApiResponse({status:401, description:"Token is missing"})
@@ -53,30 +56,33 @@ export class SellerProductsController {
          
     }
 
+    // Endpoint that handles product creation
     @ApiOperation({summary:"Create a new product"})
     @ApiResponse({status:201, type:ProductItemResponseDto})
     @ApiResponse({status:401, description:"Token is missing"})
     @ApiResponse({status:403, description:"Access denied: insufficient role"})
-    @ApiResponse({status:404, description:"Product not found."})
     @Post()
     @UseGuards(AuthGuard)
     @Roles('SELLER')
     async createProduct(@Body() createProductDto:CreateProductDto){
 
+        const {name,image,description,price,stock,details,brand,category,seller_id} = createProductDto;
+
         return await this.commandBus.execute(new CreateProductCommand(
-            createProductDto.name,
-            createProductDto.image,
-            createProductDto.description,
-            createProductDto.price,
-            createProductDto.stock,
-            createProductDto.details,
-            createProductDto.brand,
-            createProductDto.category,
-            createProductDto.seller_id
+            name,
+            image,
+            description,
+            price,
+            stock,
+            details,
+            brand,
+            category,
+            seller_id
         ));
 
     }
 
+    // Endpoint responsible for managing product disposal
     @ApiOperation({summary:"Soft delete of the product"})
     @ApiResponse({status:200, type:DeleteResponseDto})
     @ApiResponse({status:401, description:"Token is missing"})
@@ -85,13 +91,14 @@ export class SellerProductsController {
     @Delete(':id')
     @UseGuards(AuthGuard)
     @Roles('SELLER')
-    async softDelete(@Param('id') id:string, @Req() req:AuthenticatedRequest){
+    async deleteProduct(@Param('id') id:string, @Req() req:AuthenticatedRequest){
         
         const sellerId = req.user.userId;
         return await this.commandBus.execute(new DeleteProductCommand(id,sellerId));
 
     }
 
+    // Endpoint responsible for managing product update
     @ApiOperation({summary:"Updates the product data."})
     @ApiResponse({status:200, type:ProductItemResponseDto})
     @ApiResponse({status:401, description:"Token is missing"})

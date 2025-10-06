@@ -5,6 +5,7 @@ import type { ISaleRepository } from "../../domain/interfaces/isale-repository.i
 import { SaleMapper } from "../../presentations/mappers/sale.mapper";
 import { SaleItemResponseDto } from "../../presentations/dtos/response-sale-item.dto";
 
+// Handler for FindAllSalesQuery: returns a list of sales for the given user
 @QueryHandler(FindAllSalesQuery)
 export class FindAllSalesHandler implements IQueryHandler<FindAllSalesQuery>{
 

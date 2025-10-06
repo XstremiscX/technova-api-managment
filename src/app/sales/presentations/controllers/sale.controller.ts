@@ -11,6 +11,7 @@ import { SaleDetailsResponseDto } from "../dtos/response-sale-details.dto";
 import { CreateSaleDto } from "../dtos/create-sale.dto";
 import { SaveSaleCommand } from "../../application/commands/save-sale.command";
 
+// Controller for managing sales and purchases using CQRS and role-based access control
 @Controller("sales")
 @ApiTags("sales")
 export class SaleController{
@@ -20,6 +21,7 @@ export class SaleController{
         private readonly queryBus:QueryBus
     ){}
     
+    // Endpoint to get all sales/purchases for the authenticated user
     @ApiOperation({summary:"Get all sales/purchases for a user."})
     @ApiResponse({status:200, type:[SaleItemResponseDto]})
     @ApiResponse({status:401, description:"Token is missing"})
@@ -37,8 +39,9 @@ export class SaleController{
 
     }
 
+    // Endpoint to get detailed information about a specific sale/purchase by ID
     @ApiOperation({summary:"Get by id the sale/purchase for a user."})
-    @ApiResponse({status:200, type:[SaleDetailsResponseDto]})
+    @ApiResponse({status:200, type:SaleDetailsResponseDto})
     @ApiResponse({status:401, description:"Token is missing"})
     @ApiResponse({status:403, description:"Access denied: insufficient role"})
     @ApiResponse({status:500, example:"Internal server error."})
@@ -51,8 +54,9 @@ export class SaleController{
 
     }
 
+    // Endpoint to create a new sale/purchase
     @ApiOperation({summary:"Create a new sale"})
-    @ApiResponse({status:200, type:[SaleItemResponseDto]})
+    @ApiResponse({status:200, type:SaleItemResponseDto})
     @ApiResponse({status:401, description:"Token is missing"})
     @ApiResponse({status:403, description:"Access denied: insufficient role"})
     @ApiResponse({status:500, example:"Internal server error."})

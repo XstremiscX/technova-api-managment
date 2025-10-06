@@ -1,4 +1,4 @@
-import { ProductMapper } from "@mappers/seller-products.mapper";
+import { ProductMapper } from "@mappers/products.mapper";
 import { Module } from "@nestjs/common";
 import { FindAllPublicProductsHandler } from "../../application/handlers/find-all-public-products.handler";
 import { FindByIdPublicProductHandler } from "../../application/handlers/find-by-id-public-products.handler";

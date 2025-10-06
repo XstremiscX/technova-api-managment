@@ -10,18 +10,23 @@ import { CreateBrandCommand } from "../../application/commands/create-brand.comm
 import { UpdateBrandDto } from "../dtos/update-brand.dto";
 import { UpdateBrandCommand } from "../../application/commands/update-brand.command";
 import { DeleteBrandCommand } from "../../application/commands/delete-brand.command";
-import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
+import { DeleteResponseDto } from "src/app/commons/dtos/response-deleted-domain.dto";
 import { AuthGuard } from "src/app/auth/infrastructure/guards/auth.guard";
 import { Roles } from "src/app/auth/infrastructure/decorators/roles.decorator";
 
+// Controller that manages CRUD operations for brands using CQRS
 @Controller("brands")
 @ApiTags("brands")
 export class BrandController {
+    
     constructor(
+        // Command bus to execute actions that modify the state
         private readonly commandBus: CommandBus,
+        // Query bus to execute actions that read the status
         private readonly queryBus: QueryBus
     ){}
 
+    // Endpoint to list all brands
     @Get()
     @ApiOperation({summary:"List all brands"})
     @ApiResponse({status:200, type:[BrandResponseDto]})
@@ -29,6 +34,7 @@ export class BrandController {
         return this.queryBus.execute(new GetAllBrandsQuery());
     }
 
+    // Endpoint to get a brand by ID
     @Get(':id')
     @ApiOperation({summary:"Get brand by id"})
     @ApiResponse({status:200, type: BrandResponseDto})
@@ -37,6 +43,7 @@ export class BrandController {
         return this.queryBus.execute(new GetBrandByIdQuery(id));
     }
 
+    // Endpoint to create a new brand (ADMIN only)
     @Post()
     @ApiOperation({summary:"Create new Brand"})
     @ApiResponse({status:201, type: BrandResponseDto})
@@ -48,6 +55,7 @@ export class BrandController {
         return this.commandBus.execute(new CreateBrandCommand(createBrandDto.name));
     }
 
+    // Endpoint to update an existing brand (ADMIN only)
     @Put(':id')
     @ApiOperation({summary:"Update Brand"})
     @ApiResponse({status:200, type:BrandResponseDto})
@@ -58,6 +66,7 @@ export class BrandController {
         return this.commandBus.execute(new UpdateBrandCommand(updateBrandDto.name,id));
     }
 
+    // Endpoint to delete a brand (ADMIN only)
     @Delete(':id')
     @ApiOperation({summary:"Delete Brand"})
     @ApiResponse({status:200, type: DeleteResponseDto})

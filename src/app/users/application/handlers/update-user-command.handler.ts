@@ -19,7 +19,7 @@ export class UpdateUserCommandHandler implements ICommandHandler<UpdateUserComma
 
         const user = await this.userRepository.findById(command.id);
 
-        if(!user) throw new NotFoundException("User not found.");
+        if(!user) throw new NotFoundException(`User with ${command.id} not found.`);
 
         if(command.address) user.changeAddress(command.address);
         if(command.name) user.changeName(command.name);

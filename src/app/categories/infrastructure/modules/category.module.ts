@@ -6,7 +6,7 @@ import { CategoryMapper } from "../../presentations/mappers/category.mapper";
 import { CategoryController } from "../../presentations/controllers/category.controller";
 import { GetByIdCategoryHandler } from "../../application/handlers/get-by-id-categories.handler";
 import { CreateCategoryHandler } from "../../application/handlers/create-category.handler";
-import { DeleteCategoryhandler } from "../../application/handlers/delete-category.handler";
+import { DeleteCategoryHandler } from "../../application/handlers/delete-category.handler";
 import { UpdateCategoryHandler } from "../../application/handlers/update-category.handler";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CategoryEntity } from "../../domain/entities/category.entity";
@@ -15,27 +15,30 @@ import { AuthModule } from "src/app/auth/infrastructure/modules/auth.module";
 
 @Module({
     imports:[
+        // Registers the CategoryEntity for TypeORM operations
         TypeOrmModule.forFeature([CategoryEntity]),
+        // Enables CQRS command and query buses
         CqrsModule,
+        // Imports authentication module for role-based access control
         AuthModule
     ],
     controllers:[CategoryController],
     providers:[
         
-        //Repository
+        // Provides the repository implementation via its interface token
         {
             provide:"ICategoryRepository",
             useClass: CategoryRepository
         },
 
-        //Mapper
+        // Provides the mapper for transforming between domain, entity, and DTO
         CategoryMapper,
 
-        //handlers
+        // Registers all command and query handlers
         GetAllCategoriesHandler,
         GetByIdCategoryHandler,
         CreateCategoryHandler,
-        DeleteCategoryhandler,
+        DeleteCategoryHandler,
         UpdateCategoryHandler
     
     ],

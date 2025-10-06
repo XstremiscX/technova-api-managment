@@ -3,7 +3,7 @@ import { FindByIdPublicProductQuery } from "../queries/find-by-id-public-product
 import { Inject } from "@nestjs/common";
 import type { IPublicProductsRepository } from "../../domain/interfaces/ipublic-products-repository.interface";
 import { Product } from "src/app/commons/domain/entitites/product";
-import { ProductMapper } from "@mappers/seller-products.mapper";
+import { ProductMapper } from "@mappers/products.mapper";
 import { ProductItemResponseDto } from "src/app/commons/dtos/response-product-itme.dto";
 
 @QueryHandler(FindByIdPublicProductQuery)
@@ -22,4 +22,4 @@ export class FindByIdPublicProductHandler implements IQueryHandler<FindByIdPubli
 
     }
     
-}
+} 

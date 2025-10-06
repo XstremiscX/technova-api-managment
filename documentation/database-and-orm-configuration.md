@@ -10,7 +10,7 @@ Then, you must configure the environment(.env) data:
 4. DB_PASSWORD="Database user password"
 5. DB_NAME="Database name"
 
-Then you must execute this command(Replace the InitialScheme with whatever scheme you want. ):
+Then you must execute this command(Replace the InitialSchema in 'migration:generate src/app/commons/database/migrations/InitialSchema' with whatever scheme you want. ):
 
 ```bash
 npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate src/app/commons/database/migrations/InitialSchema -d src/app/commons/database/datasource.ts

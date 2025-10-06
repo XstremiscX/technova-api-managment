@@ -5,7 +5,7 @@ import { LoginResponseDto } from "../../presentation/dtos/response-login.dto";
 import type { IAuthService } from "../../domain/interfaces/iauth-service.interface";
 import type { ITokenService } from "../../domain/interfaces/itoken-service.interface";
 
-
+// Handler for LoginCommand: validates credentials and returns a JWT
 @CommandHandler(LoginCommand)
 export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
   

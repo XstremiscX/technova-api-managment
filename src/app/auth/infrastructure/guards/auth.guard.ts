@@ -2,6 +2,7 @@ import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, Forbi
 import { TokenService } from '../services/token.service';
 import { Reflector } from '@nestjs/core';
 
+// Guard that validates JWT tokens and enforces role-based access control
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -23,6 +24,7 @@ export class AuthGuard implements CanActivate {
 
     const payload = this.tokenService.verifyToken(token);
 
+    // Restricts access to user-specific routes
     if (path.includes('/users/') && paramId) {
       if (payload.userId !== paramId) {
         throw new ForbiddenException("You can only access or modify your own data.");
@@ -31,6 +33,7 @@ export class AuthGuard implements CanActivate {
     
     request.user = payload;
 
+    // Checks required roles from metadata
     const requiredRoles = this.reflector.get<string[]>('roles', context.getHandler());
 
     if (requiredRoles && !requiredRoles.includes(payload.userType)) {

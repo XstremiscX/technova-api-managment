@@ -21,16 +21,14 @@ export class UpdateCategoryHandler implements ICommandHandler<UpdateCategoryComm
 
     async execute(command: UpdateCategoryCommand): Promise<CategoryResponseDto> {
         // Retrieves the Category domain entity by ID using the repository
-        const categoryUpdate = await this.categoryRepo.findById(command.id);
+        const categoryToUpdate = await this.categoryRepo.findById(command.id);    
 
-        // Applies the name change to the domain entity
-        categoryUpdate.rename(command.newName);     
-    
-        // Optionally updates the description if a new one is provided
-        const category = new Category(categoryUpdate.id, categoryUpdate.getName(), command.newDescription ?? categoryUpdate.getDescription());
+        if(command.newName) categoryToUpdate.rename(command.newName);
+        
+        if(command.newDescription) categoryToUpdate.changeDescription(command.newDescription);
 
         // Persists the updated Category entity using the repository
-        const updated = await this.categoryRepo.update(category);
+        const updated = await this.categoryRepo.update(categoryToUpdate);
 
         // Maps the updated entity to a DTO and returns it
         return this.mapper.toResponseDtoFromDomain(updated);

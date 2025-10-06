@@ -3,7 +3,7 @@ import { DeleteBrandCommand } from "../commands/delete-brand.command";
 import type { IBrandRepository } from "../../domain/interfaces/ibrand-repository.interface";
 import { Inject} from "@nestjs/common";
 import { DeletedResult } from "src/app/commons/utils/enums/deleted-resutls.enum";
-import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
+import { DeleteResponseDto } from "src/app/commons/dtos/response-deleted-domain.dto";
 
 // Registers this class as the handler for the DeleteBrandCommand
 @CommandHandler(DeleteBrandCommand)

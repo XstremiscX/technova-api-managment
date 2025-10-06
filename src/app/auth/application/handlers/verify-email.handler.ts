@@ -3,6 +3,7 @@ import { VerifyEmailCommand } from "../commands/verify-email.command";
 import { Inject } from "@nestjs/common";
 import type { IUserRepository } from "src/app/users/domain/interfaces/iuser-repository.interface";
 
+// Handler for VerifyEmailCommand: marks the user's email as verified
 @CommandHandler(VerifyEmailCommand)
 export class VerifyEmailCommandHanlder implements ICommandHandler<VerifyEmailCommand>{
 

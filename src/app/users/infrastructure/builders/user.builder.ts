@@ -38,17 +38,21 @@ export class UserBuilder{
         this.verified = false;
         this.registration_date = new Date();
     }
+    
+    // Sets the user type
     withType(type:UserTypeEnum):UserBuilder{
         this.type = type;
         return this;
     }
 
+    // Sets the hashed password
     withPassword(hashedPassword:string):UserBuilder{
         this.password = hashedPassword;
 
         return this;
     }
 
+    // Builds and returns the User domain entity
     build():User{
         if(this.password === undefined) throw new BadRequestException("Password is required to create a user.");
         if(!this.name || !this.email || !this.phone || !this.address) throw new BadRequestException("Name, email, phone and address are required to create a user.");

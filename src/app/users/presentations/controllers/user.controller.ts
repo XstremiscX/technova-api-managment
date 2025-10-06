@@ -21,6 +21,7 @@ export class UserController{
         private readonly queryBus: QueryBus
     ) {}
 
+    // Endpoint to create a new user.
     @ApiOperation({summary:"Create a new user"})
     @ApiResponse({status:201, type:UserResponseDto})
     @ApiResponse({status:400, description:"Bad request"})
@@ -29,6 +30,7 @@ export class UserController{
         return  await this.commandBus.execute(new CreateUserCommand(user.name,user.email,user.phone,user.password,user.type,user.address));
     }
 
+    // Endpoint to obtain user information by ID, with a valid JWT token.
     @ApiOperation({summary:"Get user by id"})
     @ApiResponse({status:200, type:UserResponseDto})
     @ApiResponse({status:400, description:"Bad request"})
@@ -39,6 +41,7 @@ export class UserController{
         return this.queryBus.execute(new GetByIdUserQuery(id));
     }
     
+    // Endpoint to remove a user from the database.
     @ApiOperation({summary:"Soft delete user by id"})
     @ApiResponse({status:200, description:"User soft deleted successfully"})
     @ApiResponse({status:400, description:"Bad request"})
@@ -49,6 +52,7 @@ export class UserController{
         return this.commandBus.execute(new DeleteUserCommand(id));
     }
 
+    // Endpoint to update user info.
     @ApiOperation({summary:"Update user by id"})
     @ApiResponse({status:200, type:UserResponseDto})
     @ApiResponse({status:400, description:"Bad request"})
@@ -59,6 +63,7 @@ export class UserController{
         return this.commandBus.execute(new UpdateUserCommand(id,user.name,user.email,user.phone,user.address));
     }
 
+    // Endpoint to update user password.
     @ApiOperation({summary:"User password update by id"})
     @ApiResponse({status:200, description:"User password updated successfully"})
     @ApiResponse({status:400, description:"Bad request"})

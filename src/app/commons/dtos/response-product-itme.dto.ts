@@ -1,15 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+// DTO representing a summarized product item for listings
 export class ProductItemResponseDto{
 
     @ApiProperty({description:"Product id",example:"1kwg3f-sah32j34-d123"})
     id:string;
 
     @ApiProperty({description:"Product name", example:"MSI Dragon Layer"})
-    name:String;
+    name:string;
 
     @ApiProperty({description:"Product Image", example:"https://imagerepository/image.png"})
-    image:String;
+    image:string;
 
     @ApiProperty({description:"Product price", example:34000})
     price:number;

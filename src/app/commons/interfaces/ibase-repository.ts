@@ -1,3 +1,5 @@
+
+// Base interface for defining generic methods that will be found in most repositories.
 export interface IBaseRepository<TDomain>{
 
     // Find an entity by id

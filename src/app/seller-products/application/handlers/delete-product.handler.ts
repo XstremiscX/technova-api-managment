@@ -2,10 +2,11 @@ import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import { DeleteProductCommand } from "../commands/delete-product.command";
 import { Inject } from "@nestjs/common";
 import type { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
-import { DeleteResponseDto } from "src/app/commons/utils/response-deleted-domain.dto";
+import { DeleteResponseDto } from "src/app/commons/dtos/response-deleted-domain.dto";
 import { DeletedResult } from "src/app/commons/utils/enums/deleted-resutls.enum";
 import { Product } from "../../../commons/domain/entitites/product";
 
+// Handler for DeleteProductCommand: performs a soft delete and returns a standardized response
 @CommandHandler(DeleteProductCommand)
 export class DeleteProductHandler implements ICommandHandler<DeleteProductCommand>{
 

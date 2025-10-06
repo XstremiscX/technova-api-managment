@@ -1,61 +1,35 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
-import { Transform } from "class-transformer";
+import { ApiPropertyOptional } from "@nestjs/swagger";
+import { OmitType, PartialType } from "@nestjs/mapped-types";
+import { CreateProductDto } from "./create-product.dto";
+import { Min } from "class-validator";
 
-export class UpdateProductDto{
+// DTO used to update product information, excluding seller_id
+export class UpdateProductDto extends PartialType(OmitType(CreateProductDto,['seller_id'])){
 
-    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({description:"Product name", example:"Ram 18Gb ddr4"})
-    @IsOptional()
+    @ApiPropertyOptional({description:"Product name", example:"Ram 18Gb ddr4"})
     name?:string;
 
-    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({description:"Image url", example:"https://imageRespository/ram_image.png"})
-    @IsOptional()
+    @ApiPropertyOptional({description:"Image url", example:"https://imageRespository/ram_image.png"})
     image?:string;
 
-    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({description:"Product description", example:"Example product description"})
-    @IsOptional()
+    @ApiPropertyOptional({description:"Product description", example:"Example product description"})
     description?:string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    @ApiProperty({description:"Product price", example:500})
-    @IsOptional()
+    @Min(0)
+    @ApiPropertyOptional({description:"Product price", example:500})
     price?:number;
 
-    @IsNumber()
-    @IsNotEmpty()
-    @ApiProperty({description:"Product stock", example:20})
-    @IsOptional()
+    @Min(0)
+    @ApiPropertyOptional({description:"Product stock", example:20})
     stock?:number;
 
-    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({description:"Product details", example:"{RamMemory:12GB, SSD:500Gb, Screen:144hz,....}"})
-    @IsOptional()
+    @ApiPropertyOptional({description:"Product details", example:"{RamMemory:12GB, SSD:500Gb, Screen:144hz,....}"})
     details?:string;
 
-    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({description:"Product brand id", example:"123afq3-asdr124-aer134r33"})
-    @IsOptional()
+    @ApiPropertyOptional({description:"Product brand id", example:"123afq3-asdr124-aer134r33"})
     brand?:string;
 
-    @Transform(({value})=>{return typeof value == "string"? value.trim():value})
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({description:"Product category id", example:"123afq3-asdr124-aerr33"})
-    @IsOptional()
+    @ApiPropertyOptional({description:"Product category id", example:"123afq3-asdr124-aerr33"})
     category?:string;
 
 }

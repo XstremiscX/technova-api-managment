@@ -1,4 +1,4 @@
-// Query used to retrieve a user by their unique ID.
+// Query used to retrieve a user by their unique ID
 export class GetByIdUserQuery{
 
     constructor(

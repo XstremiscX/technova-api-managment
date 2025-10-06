@@ -1,6 +1,6 @@
 import { UserTypeEnum } from "src/app/commons/utils/enums/users-type.enum";
 
-// Command used to initiate the creation of a new user.
+// Command used to initiate the creation of a new user
 export class CreateUserCommand{
     constructor(
         public readonly name:string,

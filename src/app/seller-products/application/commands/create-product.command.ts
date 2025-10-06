@@ -1,3 +1,4 @@
+// Command representing the intention to create a new product
 export class CreateProductCommand{
     constructor(
         public readonly name:string,

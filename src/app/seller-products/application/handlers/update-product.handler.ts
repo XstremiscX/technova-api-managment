@@ -1,11 +1,12 @@
 import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import { Inject } from "@nestjs/common";
 import type { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
-import { ProductMapper } from "../../../commons/mappers/seller-products.mapper";
+import { ProductMapper } from "../../../commons/mappers/products.mapper";
 import { UpdateProductCommand } from "../commands/update-product.command";
 import { ProductItemResponseDto } from "../../../commons/dtos/response-product-itme.dto";
 import { Product } from "../../../commons/domain/entitites/product";
 
+// Handler for UpdateProductCommand: updates product fields and returns updated summary
 @CommandHandler(UpdateProductCommand)
 export class UpdateProductHandler implements ICommandHandler<UpdateProductCommand>{
 

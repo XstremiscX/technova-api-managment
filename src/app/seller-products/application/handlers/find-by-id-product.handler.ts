@@ -5,7 +5,7 @@ import { ProductDetailResponseDto } from "../../../commons/dtos/response-product
 import type { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
 import { Product } from "../../../commons/domain/entitites/product";
 
-
+// Handler for FindByIdProductQuery: returns detailed product information
 @QueryHandler(FindByIdProductQuery)
 export class FindByIdProductHandler implements IQueryHandler<FindByIdProductQuery>{
 

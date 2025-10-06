@@ -14,16 +14,19 @@ import { BussinessError } from "src/app/commons/error_management/bussines errors
 import { AuthGuard } from "src/app/auth/infrastructure/guards/auth.guard";
 import { Roles } from "src/app/auth/infrastructure/decorators/roles.decorator";
 
-
+// Controller that manages CRUD operations for brands using CQRS
 @Controller('categories')
 @ApiTags('categories')
 export class CategoryController {
 
     constructor(
+        // Query bus to execute actions that read the status
         private queryBus : QueryBus,
+        // Command bus to execute actions that modify the state
         private commandBus : CommandBus
     ){}
 
+    // Endpoint to list all categories
     @Get()
     @ApiOperation({summary: "List all categories"})
     @ApiResponse({status:200, type:[CategoryResponseDto]})
@@ -32,6 +35,7 @@ export class CategoryController {
         return this.queryBus.execute(new GetAllCategoriesQuery());
     }
 
+    // Endpoint to get a category by ID
     @Get(':id')
     @ApiOperation({summary:"Get category by id"})
     @ApiResponse({status:200, type:CategoryResponseDto})
@@ -40,6 +44,7 @@ export class CategoryController {
         return this.queryBus.execute(new GetByIdCategoryQuery(id));
     }
 
+    // Endpoint to create a new category (ADMIN only)
     @Post()
     @ApiOperation({summary:"Create a new category"})
     @ApiResponse({status:201, type: CategoryResponseDto})
@@ -51,21 +56,7 @@ export class CategoryController {
         return this.commandBus.execute(new CreateCategoryCommand(createCategoryDto.name,createCategoryDto.description))
     }
 
-    @Patch(':id')
-    @ApiOperation({summary:"Update the category name."})
-    @ApiResponse({status:201, type:CategoryResponseDto})
-    @ApiResponse({status: 400, type: BussinessError})
-    @ApiResponse({status:500, description:"Internal Server Error."})
-    @UseGuards(AuthGuard)
-    @Roles('ADMIN')
-    async parcialUpdate(@Param('id') id:string, @Body() updateCategoryDto:UpdateCategoryDto){
-
-        if(!updateCategoryDto.name) throw new BadRequestException("A category name is needed");
-        if(updateCategoryDto.description) throw new BussinessError("For this endpoint don't charge a new description.")
-
-        return this.commandBus.execute(new UpdateCategoryCommand(id, updateCategoryDto.name));
-    }
-
+    // Endpoint to update an existing category (ADMIN only)
     @Put(':id')
     @ApiOperation({summary:"Update category"})
     @ApiResponse({status:201, type:CategoryResponseDto})
@@ -75,19 +66,20 @@ export class CategoryController {
     @Roles('ADMIN')
     async updateCategory(@Param('id') id:string, @Body() updateCategoryDto:UpdateCategoryDto){
 
-        if(!updateCategoryDto.name || !updateCategoryDto.description) throw new BadRequestException("A category name and description is needed.")
+        if(!updateCategoryDto.name && !updateCategoryDto.description) throw new BadRequestException("A new category name or description is needed.")
 
         return this.commandBus.execute(new UpdateCategoryCommand(id, updateCategoryDto.name,updateCategoryDto.description))
     }
 
+    // Endpoint to delete a category (ADMIN only)
     @Delete(':id')
     @ApiOperation({summary:"Delete category"})
-    @ApiResponse({status:201, type:CategoryResponseDto})
+    @ApiResponse({status:200, type:CategoryResponseDto})
     @ApiResponse({status: 400, type: BussinessError})
     @ApiResponse({status:500, description:"Internal Server Error."})
     @UseGuards(AuthGuard)
     @Roles('ADMIN')
-    async deletCategory(@Param('id') id:string){
+    async deleteCategory(@Param('id') id:string){
         return this.commandBus.execute(new DeleteCategoryCommand(id));
     }
 }

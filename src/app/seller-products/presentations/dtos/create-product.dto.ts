@@ -1,7 +1,8 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 
+// DTO used to create a product and validate input data
 export class CreateProductDto{
 
     @Transform(({value})=>{return typeof value == "string"? value.trim():value})
@@ -24,11 +25,13 @@ export class CreateProductDto{
 
     @IsNumber()
     @IsNotEmpty()
+    @Min(0)
     @ApiProperty({description:"Product price", example:500})
     price:number;
 
     @IsNumber()
     @IsNotEmpty()
+    @Min(0)
     @ApiProperty({description:"Product stock", example:20})
     stock:number;
 

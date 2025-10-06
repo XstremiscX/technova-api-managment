@@ -2,10 +2,11 @@ import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { FindAllProductsQuery } from "../queries/find-all-products.query";
 import { Inject } from "@nestjs/common";
 import type { ISellerProductRepository } from "../../domain/interfaces/iseller-product-repository.interface";
-import { ProductMapper } from "../../../commons/mappers/seller-products.mapper";
+import { ProductMapper } from "../../../commons/mappers/products.mapper";
 import { ProductItemResponseDto } from "../../../commons/dtos/response-product-itme.dto";
 import { Product } from "../../../commons/domain/entitites/product";
 
+// Handler for FindAllProductsQuery: returns a list of products for the given seller
 @QueryHandler(FindAllProductsQuery)
 export class FindAllProductHandler implements IQueryHandler<FindAllProductsQuery>{
 

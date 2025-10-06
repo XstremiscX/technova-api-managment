@@ -1,14 +1,16 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 import { Transform } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateSaleDto{
 
+    @Min(0)
     @IsNumber()
     @IsNotEmpty()
     @ApiProperty({description:"Sale amount", example:500000})
     amount:number;
 
+    @Min(0)
     @IsNumber()
     @IsNotEmpty()
     @ApiProperty({description:"Product purchase quantity", example:12})
