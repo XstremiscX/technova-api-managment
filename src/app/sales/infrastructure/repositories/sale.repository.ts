@@ -25,7 +25,9 @@ export class SaleRepository implements ISaleRepository{
         if(userType == "SELLER") findOptions.seller = user;
         if(userType == "BUYER") findOptions.buyer = user;
         
-        const salesList = await this.saleRepository.find({where:findOptions});
+        const salesList = await this.saleRepository.find({where:findOptions,loadRelationIds:true});
+
+        console.log(salesList)
 
         if(salesList.length == 0) return [];
 

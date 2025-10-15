@@ -57,4 +57,12 @@ npm install @types/nodemailer
 echo "Instalando sanitize-html"
 npm install sanitize-html
 
+# Install Jest and testing libraries
+echo "🧪 Instalando Jest y librerías de testing..."
+npm install --save-dev jest @types/jest ts-jest
+
+# Install Sqlite3
+echo "🗄️ Instalando sqlite3..."
+npm install sqlite3
+
 echo "🎉 Instalación completa. Tu entorno está listo para construir la Technova API."

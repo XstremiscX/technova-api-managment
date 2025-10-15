@@ -35,6 +35,8 @@ export class SaleController{
         const userId = req.user.userId;
         const userType = req.user.userType;
 
+        console.log(userId)
+
         return await this.queryBus.execute(new FindAllSalesQuery(userId, userType));
 
     }
@@ -65,7 +67,7 @@ export class SaleController{
     @Roles('BUYER')
     async saveSale(@Body() createSaleDto:CreateSaleDto){
 
-        return await this.queryBus.execute(new SaveSaleCommand(
+        return await this.commandBus.execute(new SaveSaleCommand(
             createSaleDto.amount,
             createSaleDto.quantity,
             createSaleDto.buyer,

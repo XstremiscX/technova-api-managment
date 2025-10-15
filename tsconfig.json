@@ -23,6 +23,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@mappers/*":["src/app/commons/mappers/*"],
+      "src/*": ["src/*"]
     }
   }
 }
