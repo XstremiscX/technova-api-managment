@@ -9,7 +9,7 @@ import { PasswordService } from "../../infrastructure/services/password.service"
  * Ensures the new password matches its confirmation, hashes it, and persists the change.
  */
 @CommandHandler(UpdateUserPasswordCommand)
-export class UpdateUserPasswordCommandHandler implements ICommandHandler<UpdateUserPasswordCommand>{
+export class UpdateUserPasswordHandler implements ICommandHandler<UpdateUserPasswordCommand>{
 
     constructor(
         @Inject('IUserRepository') private readonly userRepository: IUserRepository

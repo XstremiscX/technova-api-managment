@@ -9,7 +9,7 @@ import { UserResponseDto } from "../../presentations/dtos/response-user.dto";
  * Delegates the lookup to the repository and returns a response DTO.
  */
 @QueryHandler(GetByIdUserQuery)
-export class GetByIdUserQueryHandler implements IQueryHandler<GetByIdUserQuery>{
+export class GetByIdUserHandler implements IQueryHandler<GetByIdUserQuery>{
 
     constructor(
         @Inject("IUserRepository") private readonly userRepository: IUserRepository

@@ -1,6 +1,6 @@
 import { ICommandHandler, CommandHandler } from "@nestjs/cqrs";
 import type { IUserRepository } from "../../domain/interfaces/iuser-repository.interface";
-import { BadRequestException, Inject, NotFoundException } from "@nestjs/common";
+import { Inject, NotFoundException } from "@nestjs/common";
 import { UpdateUserCommand } from "../commands/update-user.command";
 import { UserResponseDto } from "../../presentations/dtos/response-user.dto";
 
@@ -10,7 +10,7 @@ import { UserResponseDto } from "../../presentations/dtos/response-user.dto";
  * Throws if the user is not found or if any business rules are violated during mutation.
  */
 @CommandHandler(UpdateUserCommand)
-export class UpdateUserCommandHandler implements ICommandHandler<UpdateUserCommand>{
+export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand>{
     constructor(
         @Inject("IUserRepository") private readonly userRepository: IUserRepository
     ){}

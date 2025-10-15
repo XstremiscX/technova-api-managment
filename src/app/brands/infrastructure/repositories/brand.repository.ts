@@ -52,7 +52,7 @@ export class BrandRepository implements IBrandRepository {
     // Search for a brand by ID
     async findById(id: string): Promise<Brand> {
 
-        const brandEntity = await this.repo.findOneBy({id});
+        const brandEntity = await this.repo.findOne({where:{id:id}});
 
         if(!brandEntity) throw new NotFoundException(`Brand with id: ${id} not found`);
 

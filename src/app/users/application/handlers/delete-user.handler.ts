@@ -10,7 +10,7 @@ import { DeletedResult } from "src/app/commons/utils/enums/deleted-resutls.enum"
  * Delegates the deletion logic to the repository and returns a standardized response.
  */
 @CommandHandler(DeleteUserCommand)
-export class DeleteUserCommandHandler implements ICommandHandler<DeleteUserCommand>{
+export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand>{
 
     constructor(
         @Inject("IUserRepository") private readonly userRepository: IUserRepository,

@@ -63,7 +63,7 @@ export class UserRepository implements IUserRepository{
 
         const userEntity = await this.repo.findOne({where:{id,status:true}, select:['id','name','email','phone','address']});
 
-        if(!userEntity) throw new NotFoundException("User not found.");
+        if(!userEntity) throw new NotFoundException(`User with id ${id} not found.`);
 
         return this.mapper.toUserPublicViewFromEntity(userEntity);
 
@@ -95,13 +95,11 @@ export class UserRepository implements IUserRepository{
     */
     async update(user: UserPublicView): Promise<UserPublicView>{
 
-        if(!user.id) throw new BadRequestException("Id is required.");
-
         if( await this.existsByEmail(user.getEmail(), user.id)) throw new BadRequestException(`Email ${user.getEmail()} is already in use.`);
 
-        const entityExists = await this.repo.findOneBy({id: user.id});
+        const entityExists = await this.repo.findOneBy({id: user.id, status: true});
 
-        if(!entityExists) throw new NotFoundException("User not found.");
+        if(!entityExists) throw new NotFoundException(`User with id ${user.id} not found.`);
 
         const infoForUpdate = {
             name: user.getName(),
@@ -147,7 +145,7 @@ export class UserRepository implements IUserRepository{
     
         const entityExists = await this.repo.findOne({where:{id,status:true}, select:['password']});
 
-        if(!entityExists) throw new NotFoundException("User not found.");
+        if(!entityExists) throw new NotFoundException(`User with id ${id} not found.`);
 
         await this.repo.update(id,{password:hashedPassword});
 

@@ -13,7 +13,7 @@ import { UserCreatedEventService } from "../../infrastructure/services/user-crea
  * Returns a response DTO representing the created user.
  */
 @CommandHandler(CreateUserCommand)
-export class CreateUserCommandHandler implements ICommandHandler<CreateUserCommand>{
+export class CreateUserHandler implements ICommandHandler<CreateUserCommand>{
 
     constructor(
         @Inject("IUserRepository") private readonly userRepository: IUserRepository,

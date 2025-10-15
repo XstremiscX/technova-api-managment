@@ -27,6 +27,7 @@ export class SaleMapper implements BaseMapper<Sale,SaleItemResponseDto,SaleEntit
         saleEntity.amount = sale.getAmount();
         saleEntity.quantity = sale.getQuantity();
         saleEntity.details = sale.getDetails();
+        saleEntity.date = sale.getDate();
 
         const buyer = new UserEntity()
         buyer.id = sale.getBuyer();
